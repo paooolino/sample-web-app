@@ -13,8 +13,11 @@ import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 	internal imports
 */
 
-import MainLayout from './components/MainLayout.js';
-import PHome from './components/PHome.js';
+import MainLayout from './components/MainLayout';
+import PHome from './components/PHome';
+import PLogin from './components/PLogin';
+import PRegister from './components/PRegister';
+import PLostPassword from './components/PLostPassword';
 
 /*
 	store creation
@@ -39,6 +42,9 @@ ReactDOM.render(
     <Router history={history}>
       <Route path="/" component={MainLayout}>
 				<IndexRoute component={PHome} />
+				<Route path="/login" component={PLogin} />
+				<Route path="/register" component={PRegister} />
+				<Route path="/lost-password" component={PLostPassword} />
       </Route>
     </Router>
   </Provider>,
