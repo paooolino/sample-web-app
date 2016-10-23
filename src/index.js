@@ -5,6 +5,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { combineReducers, createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
@@ -18,14 +19,16 @@ import PHome from './components/PHome';
 import PLogin from './components/PLogin';
 import PRegister from './components/PRegister';
 import PLostPassword from './components/PLostPassword';
+import loginReducer from './redux/login';
 
 /*
 	store creation
 */
 
 let store = createStore(combineReducers({
+	login: loginReducer,
   routing: routerReducer
-}))
+}), applyMiddleware(thunk))
 
 /*
 	history <> store sync
