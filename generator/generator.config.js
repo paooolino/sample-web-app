@@ -71,7 +71,7 @@
 			"error_message": ""
 		}
 	}],
-	"component": [{
+	"components": [{
 		"name": "LoginForm",
 		"redux_module": "login",
 		"helper_components": "FormRow",
