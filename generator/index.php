@@ -11,6 +11,14 @@
 		"ROUTES_TREE" => $DYNCODE["ROUTES_TREE"]
 	));
 	
+	// layout components
+	foreach($CONFIG["layout_components"] as $c) {
+		createFile("build/layout_components/", $c["name"] . ".js", file_get_contents("templates/layout_component.js"), array(
+			"LAYOUT_COMPONENT_IMPORTS" => get_layout_component_imports($c),
+			"LAYOUT_COMPONENT_HTML" => $c["html"]
+		));
+	}
+	
 function createFile($path, $filename, $template, $data) {
 	if(!is_dir($path)) {
 		mkdir($path, 0777, true);
@@ -71,4 +79,16 @@ function get_route_node($node, $level=0) {
 	}
 
 	return $code;
+}
+
+function get_layout_component_imports($c) {
+	$html = "";
+	
+	if(isset($c["imports"])) {
+		foreach($c["imports"] as $import) {
+			$html .= "import ". $import ." from './". $import ."';\r\n";
+		}
+	}
+	
+	return $html;
 }
