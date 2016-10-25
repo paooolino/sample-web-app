@@ -15,7 +15,17 @@
 	foreach($CONFIG["layout_components"] as $c) {
 		createFile("build/layout_components/", $c["name"] . ".js", file_get_contents("templates/layout_component.js"), array(
 			"LAYOUT_COMPONENT_IMPORTS" => get_layout_component_imports($c),
+			"COMPONENT_IMPORTS" => get_component_imports($c),
 			"LAYOUT_COMPONENT_HTML" => $c["html"]
+		));
+	}
+	
+	// components
+	foreach($CONFIG["components"] as $c) {
+		createFile("build/components/", $c["name"] . ".js", file_get_contents("templates/component.js"), array(
+			"REDUX_ACTIONS" => get_redux_actions($c),
+			"HELPER_COMPONENTS" => get_helper_components($c),
+			"COMPONENT_HTML" => get_component_html($c["name"])
 		));
 	}
 	
@@ -91,4 +101,45 @@ function get_layout_component_imports($c) {
 	}
 	
 	return $html;
+}
+
+function get_component_imports($c) {
+	$html = "";
+	
+	if(isset($c["import_component"])) {
+		foreach($c["import_component"] as $import) {
+			$html .= "import ". $import ." from '../components/". $import ."';\r\n";
+		}
+	}
+	
+	return $html;
+}
+
+function get_redux_actions($c) {
+	$html = "";
+	
+	if(isset($c["redux_actions"])) {
+		foreach($c["redux_actions"] as $redux) {
+			$html .= "import * as actions_". $redux ." from '../redux/". $redux ."';\r\n";
+		}
+	}
+	
+	return $html;
+}
+
+function get_helper_components($c) {
+	$html = "";
+	
+	if(isset($c["helper_components"])) {
+		foreach($c["helper_components"] as $hc) {
+			$html .= "import ". $hc ." from './". $hc ."';\r\n";
+		}
+	}
+	
+	return $html;
+}
+
+function get_component_html($name) {
+	$html = file_get_contents("config_html/components/" . $name . ".html");
+	return $html === FALSE ? "" : $html;
 }

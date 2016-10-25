@@ -22,20 +22,20 @@
 		"html": ""
 	}, {
 		"name": "Header",
-		"html": ""
+		"html": "<div>Header</div>"
 	}, {
 		"name": "Footer",
-		"html": ""
+		"html": "<div>Footer</div>"
 	}, {
 		"name": "Nav",
-		"html": ""
+		"html": "<div>Nav</div>"
 	}, {
 		"name": "PHome",
-		"html": ""
+		"html": "<div>PHome</div>"
 	}, {
 		"name": "PLogin",
-		"import_component": "LoginForm",
-		"html": ""
+		"import_component": ["LoginForm"],
+		"html": "<div><LoginForm /></div>"
 	}],
 	"redux_modules": [{
 		"name": "login",
@@ -73,9 +73,8 @@
 	}],
 	"components": [{
 		"name": "LoginForm",
-		"redux_module": "login",
-		"helper_components": "FormRow",
-		"html": "",
+		"redux_actions": ["login"],
+		"helper_components": ["FormRow"],
 		"props": [{
 			"name": "usr",
 			"type": "string"

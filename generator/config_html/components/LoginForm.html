@@ -1,0 +1,12 @@
+	<div>
+		<form onSubmit={props.submit_handler}>
+			<FormRow name="usr" label="username" change_handler={props.change_handler} value={props.usr} />
+			<FormRow name="pwd" type="password" label="password" change_handler={props.change_handler} value={props.pwd} />
+			<div>
+				<span>{props.error_message}</span>
+			</div>
+			<div>
+				{props.isRequesting ? <span>requesting...</span> : <button>Log in</button>}
+			</div>
+		</form>
+	</div>

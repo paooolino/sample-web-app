@@ -2,6 +2,7 @@ import React from 'react';
 
 
 
-export default (props) => (
 
+export default (props) => (
+<div>PHome</div>
 );
