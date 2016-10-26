@@ -10,9 +10,7 @@ import {connect} from 'react-redux';
 */
 
 import * as actions_login from '../redux/login';
-
 import FormRow from './FormRow';
-
 
 /*
 	stateless component
@@ -45,13 +43,10 @@ const LoginForm = (props) => (
 */
 
 LoginForm.propTypes = {
-	// state
 	usr: PropTypes.string.isRequired,
 	pwd: PropTypes.string.isRequired,
 	isRequesting: PropTypes.bool.isRequired,
 	error_message: PropTypes.string.isRequired,
-	
-	// handlers
 	submit_handler: PropTypes.func.isRequired,
 	change_handler: PropTypes.func.isRequired
 }
@@ -67,7 +62,7 @@ const mapDispatchToProps = (dispatch) => ({
 	},
 	change_handler: (evt) => {
 		dispatch(actions.change(evt.target.name, evt.target.value));
-	}
+	}	
 });
 
 /*
@@ -78,10 +73,7 @@ const mapStateToProps = (state) => ({
 	usr: state.login.usr,
 	pwd: state.login.pwd,
 	isRequesting: state.login.isRequesting,
-	error_message: state.login.error_message,
-	getFieldValue: (obj) => {
-		return obj.value;
-	}
+	error_message: state.login.error_message	
 });
 
 /*

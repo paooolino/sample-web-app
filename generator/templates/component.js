@@ -32,15 +32,7 @@ const LoginForm = (props) => (
 */
 
 LoginForm.propTypes = {
-	// state
-	usr: PropTypes.string.isRequired,
-	pwd: PropTypes.string.isRequired,
-	isRequesting: PropTypes.bool.isRequired,
-	error_message: PropTypes.string.isRequired,
-	
-	// handlers
-	submit_handler: PropTypes.func.isRequired,
-	change_handler: PropTypes.func.isRequired
+##PROPTYPES##
 }
 
 /*
@@ -48,13 +40,7 @@ LoginForm.propTypes = {
 */
 
 const mapDispatchToProps = (dispatch) => ({
-	submit_handler: (evt) => {
-		evt.preventDefault();
-		dispatch(actions.submit());
-	},
-	change_handler: (evt) => {
-		dispatch(actions.change(evt.target.name, evt.target.value));
-	}
+##DISPATCH_TO_PROPS##	
 });
 
 /*
@@ -62,13 +48,7 @@ const mapDispatchToProps = (dispatch) => ({
 */
 
 const mapStateToProps = (state) => ({
-	usr: state.login.usr,
-	pwd: state.login.pwd,
-	isRequesting: state.login.isRequesting,
-	error_message: state.login.error_message,
-	getFieldValue: (obj) => {
-		return obj.value;
-	}
+##STATE_TO_PROPS##	
 });
 
 /*

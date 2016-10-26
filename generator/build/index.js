@@ -14,23 +14,20 @@ import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 	internal imports
 */
 
-import MainLayout from './layout_components/MainLayout'; 
-import Header from './layout_components/Header'; 
-import Footer from './layout_components/Footer'; 
-import Nav from './layout_components/Nav'; 
-import PHome from './layout_components/PHome'; 
-import PLogin from './layout_components/PLogin'; 
-
-import loginReducer from './redux/login'; 
-
+import MainLayout from './layout_components/MainLayout';
+import Header from './layout_components/Header';
+import Footer from './layout_components/Footer';
+import Nav from './layout_components/Nav';
+import PHome from './layout_components/PHome';
+import PLogin from './layout_components/PLogin';
+import loginReducer from './redux/login';
 
 /*
 	store creation
 */
 
 let store = createStore(combineReducers({
-	login: loginReducer, 
-
+	import loginReducer from './redux/login';
   routing: routerReducer
 }), applyMiddleware(thunk))
 
