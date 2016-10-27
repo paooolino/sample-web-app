@@ -38,8 +38,7 @@ export default (state=initialState, action) => {
 
 		case REQUEST_FAILURE
 			return Object.assign({}, state, {
-				isRequesting: false,
-				error_message: action.error_message
+				isRequesting: false
 			})
 
 		case REQUEST_SUCCESS
@@ -111,17 +110,18 @@ export const submit = (usr, pwd) => (dispatch) => {
 	sync action creators
 */
 
-export const change = (name, value) => ({
-	type: CHANGE,
-	name,
-	value
-});
-
-export const request = () => ({
+export const request = () => (dispatch) => ({
 	type: REQUEST
-});
+})
 
-const request_failure = (error_message) => ({
-	type: REQUEST_FAILURE,
-	error_message
-});
+
+export const request_failure = (error_message) => (dispatch) => ({
+	error_message,
+	type: REQUEST_FAILURE
+})
+
+
+export const request_success = () => (dispatch) => ({
+	type: REQUEST_SUCCESS
+})
+

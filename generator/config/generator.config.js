@@ -58,6 +58,7 @@
 		}],
 		"actions": [{
 			"name": "REQUEST",
+			"inputs": [],
 			"effects": [{
 				"key": "isRequesting",
 				"newValue": "true"
@@ -74,6 +75,7 @@
 			}]
 		}, {
 			"name": "REQUEST_SUCCESS",
+			"inputs": [],
 			"effects": []
 		}],
 		"initialState": [{

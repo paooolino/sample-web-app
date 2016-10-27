@@ -14,19 +14,19 @@ import { ENDPOINT_HOST, ENDPOINT_PATH } from '../config';
 	action constants
 */
 
-##ACTION_CONSTANTS##
+
 
 /*
 	reducer
 */
 
 const initialState = {
-##INITIAL_STATE##
+
 };
 
 export default (state=initialState, action) => {
 	switch(action.type) {
-##REDUCER_ACTIONS##
+
 		default:
 			return state;
 	}
@@ -36,7 +36,7 @@ export default (state=initialState, action) => {
 	async action creators
 */
 
-##ASYNC_ACTIONS##
+
 export const submit = (usr, pwd) => (dispatch) => {
 	dispatch(request());
 	return fetch(ENDPOINT_HOST + ENDPOINT_PATH, {
@@ -67,4 +67,4 @@ export const submit = (usr, pwd) => (dispatch) => {
 	sync action creators
 */
 
-##SYNC_ACTIONS##
+

@@ -1,0 +1,141 @@
+# 
+# Routes section
+#
+# Bind each route to one component.
+# Routes may be nested.
+# 
+# component_name: the name of the layout component.
+# path: the url path.
+# children: a list of nested layout components.
+# IndexRoute: if set to true identifies the home route.
+#
+routes:
+- component_name: MainLayout
+  path: /
+  children:
+    - component_name: PHome
+      IndexRoute: true
+    - component_name: PLogin
+      path: /login
+    - component_name: PRegister
+      path: /register
+    - component_name: PLostPassword
+      path: /lost-password
+
+# 
+# Layout Components section
+#
+# These are components used for layout.
+# 
+# name: the name of the layout component.
+# imports: a list of layout components used by this component.
+# import_component: a list of components used by this component.
+#
+# an html file in config/<name>.html will be associated to these components.
+#
+layout_components:
+- name: MainLayout
+  imports: [Header, Footer, Nav]
+  import_component: []
+- name: Header
+  imports: []
+  import_component: []
+- name: Footer
+  imports: []
+  import_component: []
+- name: Nav
+  imports: []
+  import_component: []
+- name: PHome
+  imports: []
+  import_component: []
+- name: PLogin
+  imports: []
+  import_component: []
+
+# 
+# Redux Modules section
+#
+# define actions and reducers.
+# 
+# name: the name of the module.
+# async_actions: a list of async actions defined by the module.
+#   name: the name of the async action (lowercase).
+#   request_action: the name of the action to dispatch when requesting.
+#   data_to_pass: a list of state properties to pass to the server.
+# actions: a list of sync actions used by the module.
+#   name: the name of the sync action (uppercase).
+#   inputs: a list of properties to pass as inputs to the action creator.
+#   effects: a list of key>value properties to set when the action is dispatched.
+# initialState: a list of elements defining the initial shape of the state.
+#   name: the name of the property.
+#   jsvalue: the value of the property.
+#
+redux_modules:
+- name: login
+  async_actions:
+    - name: submit
+      request_action: REQUEST
+      data_to_pass: [usr, pwd]
+  actions:
+    - name: REQUEST
+      inputs: []
+      effects:
+      - key: isRequesting
+        newValue: "true"
+    - name: REQUEST_FAILURE
+      inputs: [error_message]
+      effects:
+      - key: isRequesting
+        newValue: "false"
+    - name: REQUEST_SUCCESS
+      inputs: []
+      effects: []
+  initialState:
+    - name: usr 
+      jsvalue: "''"
+    - name: pwd 
+      jsvalue: "''"
+    - name: isRequesting 
+      jsvalue: "false"
+    - name: error_message 
+      jsvalue: "''"
+
+# 
+# Components section
+#
+# These are the application components.
+# 
+# name: the name of the component.
+# redux_actions: a list of redux modules from which import actions.
+# helper_components: a list of other components used by this component.
+# props: a list of properties used by this component.
+#   name: the prop name.
+#   subdreducer: the redux component name to which the prop belongs. 
+#   type: the prop type.
+#
+# an html file in config/components/<name>/<name>.html will be associated to these components.
+# a js file in config/components/<name>/<prop_name>.js will be associated for each prop of type "func".
+#
+components:
+- name: LoginForm
+  redux_actions: [login]
+  helper_components: [FormRow]
+  props:
+    - name: usr
+      subreducer: login
+      type: string
+    - name: pwd
+      subreducer: login
+      type: string
+    - name: isRequesting
+      subreducer: login
+      type: bool
+    - name: error_message
+      subreducer: login
+      type: string
+    - name: submit_handler
+      type: func
+    - name: change_handler
+      type: func
+

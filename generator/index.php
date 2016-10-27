@@ -1,6 +1,20 @@
 <?php
+
+	//$CONFIG = json_decode(file_get_contents("config/generator.config.js"), true);
+	$CONFIG = yaml_parse_file("config/generator.config.yaml");
 	
-	$CONFIG = json_decode(file_get_contents("config/generator.config.js"), true);
+	/*
+	echo "<div style=\"width:48%;float:left;\"><pre>";
+	print_r($CONFIG);
+	echo "</pre>";
+	echo "</div>";
+	
+	echo "<div style=\"width:48%;float:right;\"><pre>";
+	print_r(yaml_parse_file("config/generator.config.yaml"));
+	echo "</pre>";	
+	*/
+	//die();
+	
 	
 	// index.js
 	createFile("build/", "index.js", file_get_contents("templates/index.js"), array(
@@ -154,6 +168,21 @@
 					return $html;
 				},
 				$redux["async_actions"]
+			)),
+			"SYNC_ACTIONS" => implode("\r\n\r\n", array_map(
+				function($a){
+					$html = "";
+					
+					$html .= "export const ". strtolower($a["name"]) ." = (". implode(", ", $a["inputs"]) .") => (dispatch) => ({\r\n";
+					$html .= implode(",\r\n", array_map(function($d){ return "\t" . $d; }, array_merge(
+						$a["inputs"],
+						array( "type: " . $a["name"])
+					))) . "\r\n";
+					$html .= "})". "\r\n";
+					
+					return $html;
+				},
+				$redux["actions"]
 			))
 		));
 	}
