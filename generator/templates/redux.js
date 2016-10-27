@@ -37,31 +37,6 @@ export default (state=initialState, action) => {
 */
 
 ##ASYNC_ACTIONS##
-export const submit = (usr, pwd) => (dispatch) => {
-	dispatch(request());
-	return fetch(ENDPOINT_HOST + ENDPOINT_PATH, {
-		method: 'POST',
-		headers: {
-			'Accept': 'application/json',
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify({
-			usr,
-			pwd
-		})
-	})
-		.then(response => {
-			if(!response.ok) {
-				dispatch(request_failure(response.status + ' - ' + response.statusText))
-			} else {
-				// request_success
-				
-			}
-		})
-		.catch(err => {
-			dispatch(request_failure(err.message))
-		});
-};
 
 /*
 	sync action creators

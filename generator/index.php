@@ -1,23 +1,10 @@
 <?php
 
-	//$CONFIG = json_decode(file_get_contents("config/generator.config.js"), true);
+	$OUTPUT_ROOT = "../src/";
 	$CONFIG = yaml_parse_file("config/generator.config.yaml");
 	
-	/*
-	echo "<div style=\"width:48%;float:left;\"><pre>";
-	print_r($CONFIG);
-	echo "</pre>";
-	echo "</div>";
-	
-	echo "<div style=\"width:48%;float:right;\"><pre>";
-	print_r(yaml_parse_file("config/generator.config.yaml"));
-	echo "</pre>";	
-	*/
-	//die();
-	
-	
 	// index.js
-	createFile("build/", "index.js", file_get_contents("templates/index.js"), array(
+	createFile("", "index.js", file_get_contents("templates/index.js"), array(
 		"LAYOUT_IMPORTS" => implode("\r\n", array_map(
 			function($layout){
 				return "import ". $layout["name"] ." from './layout_components/". $layout["name"] ."';";
@@ -32,7 +19,7 @@
 		),
 		"REDUCERS_LIST" => implode("\r\n", array_map(
 			function($module){
-				return "import ". $module["name"] ."Reducer from './redux/". $module["name"] ."';";
+				return $module["name"] . ": " . $module["name"] ."Reducer,";
 			}, 
 			$CONFIG["redux_modules"])
 		),
@@ -46,7 +33,7 @@
 	
 	// layout components
 	foreach($CONFIG["layout_components"] as $c) {
-		createFile("build/layout_components/", $c["name"] . ".js", file_get_contents("templates/layout_component.js"), array(
+		createFile("layout_components/", $c["name"] . ".js", file_get_contents("templates/layout_component.js"), array(
 			"LAYOUT_COMPONENT_IMPORTS" => implode("\r\n", array_map(
 				function($import){
 					return "import ". $import ." from './". $import ."';";
@@ -65,7 +52,7 @@
 	
 	// components
 	foreach($CONFIG["components"] as $c) {
-		createFile("build/components/", $c["name"] . ".js", file_get_contents("templates/component.js"), array(
+		createFile("components/", $c["name"] . ".js", file_get_contents("templates/component.js"), array(
 			"REDUX_ACTIONS" => implode("\r\n", array_map(
 				function($redux){
 					return "import * as actions_". $redux ." from '../redux/". $redux ."';";
@@ -107,7 +94,7 @@
 	
 	// redux
 	foreach($CONFIG["redux_modules"] as $redux) {
-		createFile("build/redux/", $redux["name"] . ".js", file_get_contents("templates/redux.js"), array(
+		createFile("redux/", $redux["name"] . ".js", file_get_contents("templates/redux.js"), array(
 			"ACTION_CONSTANTS" => implode("\r\n", array_map(
 				function($a){
 					GLOBAL $redux;
@@ -124,7 +111,7 @@
 			"REDUCER_ACTIONS" => implode("\r\n", array_map(
 				function($a){
 					$html = '';
-					$html .= "\t\t" . "case " . $a["name"] . "\r\n";
+					$html .= "\t\t" . "case " . $a["name"] . ":\r\n";
 					$html .= "\t\t\t" . "return Object.assign({}, state, {\r\n";
 					$html .= implode(",\r\n", array_map(
 						function($eff){
@@ -173,10 +160,10 @@
 				function($a){
 					$html = "";
 					
-					$html .= "export const ". strtolower($a["name"]) ." = (". implode(", ", $a["inputs"]) .") => (dispatch) => ({\r\n";
+					$html .= "export const ". strtolower($a["name"]) ." = (". implode(", ", $a["inputs"]) .") => ({\r\n";
 					$html .= implode(",\r\n", array_map(function($d){ return "\t" . $d; }, array_merge(
-						$a["inputs"],
-						array( "type: " . $a["name"])
+						array( "type: " . $a["name"]),
+						$a["inputs"]
 					))) . "\r\n";
 					$html .= "})". "\r\n";
 					
@@ -188,6 +175,8 @@
 	}
 	
 function createFile($path, $filename, $template, $data) {
+	GLOBAL $OUTPUT_ROOT;
+	$path = $OUTPUT_ROOT . $path;
 	if(!is_dir($path)) {
 		mkdir($path, 0777, true);
 	}
@@ -227,10 +216,20 @@ function get_route_node($node, $level=0) {
 
 function get_component_html($path, $name) {
 	$html = file_get_contents("config/" . $path . $name . ".html");
+	if( $html === FALSE ) {
+		mylog("I was looking for the <b>" . "config/" . $path . $name . ".html" . "</b> file, but none found.");
+	}
 	return $html === FALSE ? "" : $html;
 }
 
 function get_handler($path, $name) {
 	$js = file_get_contents("config/" . $path . $name . ".js");
+	if( $js === FALSE ) {
+		mylog("I was looking for the <b>" . "config/" . $path . $name . ".js" . "</b> file, but none found.");
+	}
 	return $js === FALSE ? "" : $js;
+}
+
+function mylog($s) {
+	echo "<p>" . $s . "</p>";
 }

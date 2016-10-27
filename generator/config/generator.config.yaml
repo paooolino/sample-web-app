@@ -51,6 +51,12 @@ layout_components:
   import_component: []
 - name: PLogin
   imports: []
+  import_component: [LoginForm]
+- name: PRegister
+  imports: []
+  import_component: []
+- name: PLostPassword
+  imports: []
   import_component: []
 
 # 
@@ -91,6 +97,11 @@ redux_modules:
     - name: REQUEST_SUCCESS
       inputs: []
       effects: []
+    - name: CHANGE
+      inputs: [name, value]
+      effects:
+      - key: "[action.name]"
+        newValue: action.value
   initialState:
     - name: usr 
       jsvalue: "''"
@@ -138,4 +149,9 @@ components:
       type: func
     - name: change_handler
       type: func
+- name: FormRow
+  redux_actions: []
+  helper_components: []
+  props: []
+
 

@@ -14,9 +14,10 @@ import { ENDPOINT_HOST, ENDPOINT_PATH } from '../config';
 	action constants
 */
 
-const CHANGE = 'login/CHANGE';
 const REQUEST = 'login/REQUEST';
 const REQUEST_FAILURE = 'login/REQUEST_FAILURE';
+const REQUEST_SUCCESS = 'login/REQUEST_SUCCESS';
+const CHANGE = 'login/CHANGE';
 
 /*
 	reducer
@@ -31,22 +32,26 @@ const initialState = {
 
 export default (state=initialState, action) => {
 	switch(action.type) {
-		case CHANGE:
-			return Object.assign({}, state, {
-				[action.name]: action.value
-			});
-
 		case REQUEST:
 			return Object.assign({}, state, {
 				isRequesting: true
-			});
-			
+			})
+
 		case REQUEST_FAILURE:
 			return Object.assign({}, state, {
-				isRequesting: false,
-				error_message: action.error_message
-			});		
-			
+				isRequesting: false
+			})
+
+		case REQUEST_SUCCESS:
+			return Object.assign({}, state, {
+
+			})
+
+		case CHANGE:
+			return Object.assign({}, state, {
+				[action.name]: action.value
+			})
+
 		default:
 			return state;
 	}
@@ -74,29 +79,37 @@ export const submit = (usr, pwd) => (dispatch) => {
 				dispatch(request_failure(response.status + ' - ' + response.statusText))
 			} else {
 				// request_success
-				
 			}
 		})
 		.catch(err => {
 			dispatch(request_failure(err.message))
 		});
-};
+}
+
 
 /*
 	sync action creators
 */
 
+export const request = () => ({
+	type: REQUEST
+})
+
+
+export const request_failure = (error_message) => ({
+	type: REQUEST_FAILURE,
+	error_message
+})
+
+
+export const request_success = () => ({
+	type: REQUEST_SUCCESS
+})
+
+
 export const change = (name, value) => ({
 	type: CHANGE,
 	name,
 	value
-});
+})
 
-export const request = () => ({
-	type: REQUEST
-});
-
-const request_failure = (error_message) => ({
-	type: REQUEST_FAILURE,
-	error_message
-});

@@ -14,11 +14,14 @@ import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 	internal imports
 */
 
-import MainLayout from './components/MainLayout';
-import PHome from './components/PHome';
-import PLogin from './components/PLogin';
-import PRegister from './components/PRegister';
-import PLostPassword from './components/PLostPassword';
+import MainLayout from './layout_components/MainLayout';
+import Header from './layout_components/Header';
+import Footer from './layout_components/Footer';
+import Nav from './layout_components/Nav';
+import PHome from './layout_components/PHome';
+import PLogin from './layout_components/PLogin';
+import PRegister from './layout_components/PRegister';
+import PLostPassword from './layout_components/PLostPassword';
 import loginReducer from './redux/login';
 
 /*
@@ -43,12 +46,13 @@ let history = syncHistoryWithStore(browserHistory, store);
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
-      <Route path="/" component={MainLayout}>
+			<Route path="/" component={MainLayout}>
 				<IndexRoute component={PHome} />
 				<Route path="/login" component={PLogin} />
 				<Route path="/register" component={PRegister} />
 				<Route path="/lost-password" component={PLostPassword} />
-      </Route>
+			</Route>
+
     </Router>
   </Provider>,
   document.querySelectorAll('#rootElement')[0]

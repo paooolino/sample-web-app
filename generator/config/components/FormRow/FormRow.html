@@ -1,0 +1,15 @@
+<div className="formRow">
+	<div className="formLabel">
+		{props.label}
+	</div>
+	<div className="formField">
+		{(()=>{
+			switch(props.type) {
+				case "password":
+					return <input type="password" name={props.name} onChange={props.change_handler} value={props.value} />
+				default:
+					return <input name={props.name} onChange={props.change_handler} value={props.value} />
+			}
+		})()}
+	</div>
+</div>
