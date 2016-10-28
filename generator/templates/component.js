@@ -16,7 +16,7 @@ import {connect} from 'react-redux';
 	stateless component
 */
 
-const LoginForm = (props) => (
+const Component = (props) => (
 ##COMPONENT_HTML##
 );
 
@@ -31,7 +31,7 @@ const LoginForm = (props) => (
 	...
 */
 
-LoginForm.propTypes = {
+Component.propTypes = {
 ##PROPTYPES##
 }
 
@@ -58,4 +58,4 @@ const mapStateToProps = (state) => ({
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(LoginForm);
+)(Component);

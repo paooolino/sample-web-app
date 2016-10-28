@@ -13,15 +13,17 @@ routes:
 - component_name: MainLayout
   path: /
   children:
-    - component_name: PHome
-      IndexRoute: true
-    - component_name: PLogin
-      path: /login
-    - component_name: PRegister
-      path: /register
-    - component_name: PLostPassword
-      path: /lost-password
-
+  - component_name: PHome
+    IndexRoute: true
+  - component_name: PLogin
+    path: /login
+  - component_name: PRegister
+    path: /register
+  - component_name: PLostPassword
+    path: /lost-password
+  - component_name: PDashboard
+    path: /dashboard
+      
 # 
 # Layout Components section
 #
@@ -54,8 +56,11 @@ layout_components:
   import_component: [LoginForm]
 - name: PRegister
   imports: []
-  import_component: []
+  import_component: [RegisterForm]
 - name: PLostPassword
+  imports: []
+  import_component: [LostPasswordForm]
+- name: PDashboard
   imports: []
   import_component: []
 
@@ -79,38 +84,106 @@ layout_components:
 #
 redux_modules:
 - name: login
-  async_actions:
-    - name: submit
-      request_action: REQUEST
-      data_to_pass: [usr, pwd]
-  actions:
-    - name: REQUEST
-      inputs: []
-      effects:
-      - key: isRequesting
-        newValue: "true"
-    - name: REQUEST_FAILURE
-      inputs: [error_message]
-      effects:
-      - key: isRequesting
-        newValue: "false"
-    - name: REQUEST_SUCCESS
-      inputs: []
-      effects: []
-    - name: CHANGE
-      inputs: [name, value]
-      effects:
-      - key: "[action.name]"
-        newValue: action.value
   initialState:
-    - name: usr 
-      jsvalue: "''"
-    - name: pwd 
-      jsvalue: "''"
-    - name: isRequesting 
-      jsvalue: "false"
-    - name: error_message 
-      jsvalue: "''"
+  - name: usr 
+    jsvalue: "''"
+  - name: pwd 
+    jsvalue: "''"
+  - name: isRequesting 
+    jsvalue: "false"
+  - name: error_message 
+    jsvalue: "''"
+  async_actions:
+  - name: submit
+    request_action: REQUEST
+    data_to_pass: [usr, pwd]
+  actions:
+  - name: REQUEST
+    inputs: []
+    effects:
+    - key: isRequesting
+      newValue: "true"
+  - name: REQUEST_FAILURE
+    inputs: [error_message]
+    effects:
+    - key: isRequesting
+      newValue: "false"
+  - name: REQUEST_SUCCESS
+    inputs: []
+    effects: []
+  - name: CHANGE
+    inputs: [name, value]
+    effects:
+    - key: "[action.name]"
+      newValue: action.value
+
+- name: register
+  initialState:
+  - name: usr 
+    jsvalue: "''"
+  - name: pwd 
+    jsvalue: "''"
+  - name: pwd2
+    jsvalue: "''"
+  - name: isRequesting 
+    jsvalue: "false"
+  - name: error_message 
+    jsvalue: "''"
+  async_actions:
+  - name: submit
+    request_action: REQUEST
+    data_to_pass: [usr, pwd]
+  actions:
+  - name: REQUEST
+    inputs: []
+    effects:
+    - key: isRequesting
+      newValue: "true"
+  - name: REQUEST_FAILURE
+    inputs: [error_message]
+    effects:
+    - key: isRequesting
+      newValue: "false"
+  - name: REQUEST_SUCCESS
+    inputs: []
+    effects: []
+  - name: CHANGE
+    inputs: [name, value]
+    effects:
+    - key: "[action.name]"
+      newValue: action.value
+        
+- name: lostPassword
+  initialState:
+  - name: email 
+    jsvalue: "''"
+  - name: isRequesting 
+    jsvalue: "false"
+  - name: error_message 
+    jsvalue: "''"
+  async_actions:
+  - name: submit
+    request_action: REQUEST
+    data_to_pass: [email]
+  actions:
+  - name: REQUEST
+    inputs: []
+    effects:
+    - key: isRequesting
+      newValue: "true"
+  - name: REQUEST_FAILURE
+    inputs: [error_message]
+    effects:
+    - key: isRequesting
+      newValue: "false"
+  - name: REQUEST_SUCCESS
+    inputs: []
+    effects: []
+  - name: CHANGE
+    inputs: [name, value]
+    effects:
+    - key: "[action.name]"
+      newValue: action.value
 
 # 
 # Components section
@@ -133,25 +206,67 @@ components:
   redux_actions: [login]
   helper_components: [FormRow]
   props:
-    - name: usr
-      subreducer: login
-      type: string
-    - name: pwd
-      subreducer: login
-      type: string
-    - name: isRequesting
-      subreducer: login
-      type: bool
-    - name: error_message
-      subreducer: login
-      type: string
-    - name: submit_handler
-      type: func
-    - name: change_handler
-      type: func
+  - name: usr
+    subreducer: login
+    type: string
+  - name: pwd
+    subreducer: login
+    type: string
+  - name: isRequesting
+    subreducer: login
+    type: bool
+  - name: error_message
+    subreducer: login
+    type: string
+  - name: submit_handler
+    type: func
+  - name: change_handler
+    type: func
+    
 - name: FormRow
   redux_actions: []
   helper_components: []
   props: []
+  
+- name: RegisterForm
+  redux_actions: [register]
+  helper_components: [FormRow]
+  props:
+  - name: usr
+    subreducer: register
+    type: string
+  - name: pwd
+    subreducer: register
+    type: string
+  - name: pwd
+    subreducer: register
+    type: string
+  - name: isRequesting
+    subreducer: register
+    type: bool
+  - name: error_message
+    subreducer: register
+    type: string
+  - name: submit_handler
+    type: func
+  - name: change_handler
+    type: func
 
+- name: LostPasswordForm
+  redux_actions: [lostPassword]
+  helper_components: [FormRow]
+  props:
+  - name: email
+    subreducer: lostPassword
+    type: string
+  - name: isRequesting
+    subreducer: lostPassword
+    type: bool
+  - name: error_message
+    subreducer: lostPassword
+    type: string
+  - name: submit_handler
+    type: func
+  - name: change_handler
+    type: func
 

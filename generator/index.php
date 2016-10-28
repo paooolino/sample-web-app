@@ -1,8 +1,25 @@
 <?php
 
-	$OUTPUT_ROOT = "../src/";
-	$CONFIG = yaml_parse_file("config/generator.config.yaml");
+	/*
+		configuration
+		
+		change the config root to build another application.
+	*/
 	
+	$OUTPUT_ROOT = "../src/";
+	$CONFIG_ROOT = "config_app_fields/";
+	
+	/*
+		configuration end
+	*/
+	
+	
+	
+	
+	
+	
+	$CONFIG = yaml_parse_file($CONFIG_ROOT . "/generator.config.yaml");
+
 	// index.js
 	createFile("", "index.js", file_get_contents("templates/index.js"), array(
 		"LAYOUT_IMPORTS" => implode("\r\n", array_map(
@@ -215,17 +232,21 @@ function get_route_node($node, $level=0) {
 }
 
 function get_component_html($path, $name) {
-	$html = file_get_contents("config/" . $path . $name . ".html");
+	GLOBAL $CONFIG_ROOT;
+	
+	$html = file_get_contents($CONFIG_ROOT . $path . $name . ".html");
 	if( $html === FALSE ) {
-		mylog("I was looking for the <b>" . "config/" . $path . $name . ".html" . "</b> file, but none found.");
+		mylog("I was looking for the <b>" . $CONFIG_ROOT . $path . $name . ".html" . "</b> file, but none found.");
 	}
 	return $html === FALSE ? "" : $html;
 }
 
 function get_handler($path, $name) {
-	$js = file_get_contents("config/" . $path . $name . ".js");
+	GLOBAL $CONFIG_ROOT;
+	
+	$js = file_get_contents($CONFIG_ROOT . $path . $name . ".js");
 	if( $js === FALSE ) {
-		mylog("I was looking for the <b>" . "config/" . $path . $name . ".js" . "</b> file, but none found.");
+		mylog("I was looking for the <b>" . $CONFIG_ROOT . $path . $name . ".js" . "</b> file, but none found.");
 	}
 	return $js === FALSE ? "" : $js;
 }

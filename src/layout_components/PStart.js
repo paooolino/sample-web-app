@@ -5,5 +5,5 @@ import { Link } from 'react-router';
 
 
 export default (props) => (
-<div>PLostPassword</div>
+<Link className="button" to="step-time">Prenota un campo</Link>
 );
