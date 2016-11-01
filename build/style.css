@@ -1,0 +1,19 @@
+*{padding:0;margin:0;}
+body{font-size:30px;font-family: 'Open Sans', sans-serif;}
+.container{padding:60px 20px;}
+header{position:fixed;background-color:#ddd;top:0;left:0;height:40px;width:100%;}
+footer{position:fixed;bottom:0;left:0;height:40px;width:100%;}
+
+.desc{border:5px solid #aaa;border-radius:15px;padding:10px;margin-bottom:10px;border-bottom:3px solid #bbb;background-color:#ffa;}
+.desc_label{font-size:20px;border-bottom:1px solid gray;background-color:#eee;}
+.desc_value{margin-bottom:20px;}
+
+.chat-operator{border:5px solid #aaa;border-radius:15px;padding:10px;margin-bottom:10px;border-bottom:3px solid #bbb;background-color:#ffa;}
+.chat-user{}
+
+a.button{display:block;background-color:#08f;color:#fff;padding:30px 10px;text-align:center;text-decoration:none;margin-bottom:1px;}
+a.button:hover{background-color:#0af;}
+a.button span{display:block;font-size:20px;}
+
+.userinput{margin-bottom:20px;}
+input{width:90%;font-size:30px;padding:10px;}

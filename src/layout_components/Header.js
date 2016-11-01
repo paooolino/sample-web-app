@@ -5,5 +5,5 @@ import { Link } from 'react-router';
 
 
 export default (props) => (
-<div>Header</div>
+<header>Header</header>
 );

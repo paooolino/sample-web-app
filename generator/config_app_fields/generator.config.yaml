@@ -21,8 +21,6 @@ routes:
     path: /step-field
   - component_name: PConfirm
     path: /step-confirm
-  - component_name: PDataName
-    path: /step-data-name
   - component_name: PDataTel
     path: /step-data-tel
   - component_name: PDataMail
@@ -56,14 +54,11 @@ layout_components:
   import_component: []
 - name: PTime
   imports: []
-  import_component: []
+  import_component: [TimeSelector]
 - name: PField
   imports: []
   import_component: []
 - name: PConfirm
-  imports: []
-  import_component: []
-- name: PDataName
   imports: []
   import_component: []
 - name: PDataTel
@@ -94,7 +89,47 @@ layout_components:
 #   name: the name of the property.
 #   jsvalue: the value of the property.
 #
-redux_modules: []
+redux_modules:
+- name: booking
+  async_actions: []
+  actions:
+  - name: SELECT_TIME
+    inputs: [dayTime]
+    effects:
+    - key: timeSelected
+      newValue: dayTime
+  - name: SELECT_FIELD
+    inputs: [field_id]
+    effects:
+    - key: fieldSelected
+      newValue: field_id
+  - name: SET_BOOKING_NAME
+    inputs: [booking_name]
+    effects:
+    - key: bookingName
+      newValue: booking_name
+  - name: SET_BOOKING_TEL
+    inputs: [booking_tel]
+    effects:
+    - key: bookingTel
+      newValue: booking_tel
+  - name: SET_BOOKING_MAIL
+    inputs: [booking_mail]
+    effects:
+    - key: bookingMail
+      newValue: booking_mail
+      
+  initialState:
+  - name: timeSelected
+    jsvalue: "''"
+  - name: fieldSelected
+    jsvalue: 0
+  - name: bookingName
+    jsvalue: "''"
+  - name: bookingTel
+    jsvalue: "''"
+  - name: bookingMail
+    jsvalue: "''"
 
 # 
 # Components section
@@ -112,5 +147,11 @@ redux_modules: []
 # an html file in config/components/<name>/<name>.html will be associated to these components.
 # a js file in config/components/<name>/<prop_name>.js will be associated for each prop of type "func".
 #
-components: []
+components:
+- name: TimeSelector
+  redux_actions: [booking]
+  helper_components: []
+  props:
+  - name: select_time
+    type: func
 

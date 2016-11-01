@@ -21,18 +21,17 @@ import PStart from './layout_components/PStart';
 import PTime from './layout_components/PTime';
 import PField from './layout_components/PField';
 import PConfirm from './layout_components/PConfirm';
-import PDataName from './layout_components/PDataName';
 import PDataTel from './layout_components/PDataTel';
 import PDataMail from './layout_components/PDataMail';
 import PFinish from './layout_components/PFinish';
-
+import bookingReducer from './redux/booking';
 
 /*
 	store creation
 */
 
 let store = createStore(combineReducers({
-	
+	booking: bookingReducer,
   routing: routerReducer
 }), applyMiddleware(thunk))
 
@@ -54,7 +53,6 @@ ReactDOM.render(
 				<Route path="/step-time" component={PTime} />
 				<Route path="/step-field" component={PField} />
 				<Route path="/step-confirm" component={PConfirm} />
-				<Route path="/step-data-name" component={PDataName} />
 				<Route path="/step-data-tel" component={PDataTel} />
 				<Route path="/step-data-mail" component={PDataMail} />
 				<Route path="/step-finish" component={PFinish} />
