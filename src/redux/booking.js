@@ -14,19 +14,19 @@ import fetch from 'isomorphic-fetch'
 	action constants
 */
 
-##ACTION_CONSTANTS##
+
 
 /*
 	reducer
 */
 
 const initialState = {
-##INITIAL_STATE##
+
 };
 
 export default (state=initialState, action) => {
 	switch(action.type) {
-##REDUCER_ACTIONS##
+
 		default:
 			return state;
 	}
@@ -36,10 +36,10 @@ export default (state=initialState, action) => {
 	async action creators
 */
 
-##ASYNC_ACTIONS##
+
 
 /*
 	sync action creators
 */
 
-##SYNC_ACTIONS##
+

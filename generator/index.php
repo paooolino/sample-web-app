@@ -108,7 +108,7 @@
 				}, 
 				$c["helper_components"])
 			),
-			"COMPONENT_HTML" => get_component_html("components/" . $c["name"] . "/", $c["name"]),
+			"COMPONENT_HTML" => $c["html"],
 			"PROPTYPES" => implode(",\r\n", array_map(
 				function($p){
 					return "\t" . $p["name"] . ": PropTypes." . $p["type"] . ".isRequired";
@@ -117,8 +117,7 @@
 			),
 			"DISPATCH_TO_PROPS" => implode(",\r\n", array_map(
 				function($p){
-					GLOBAL $c;
-					return get_handler("components/" . $c["name"] . "/", $p["name"]);
+					return "\t" . $p["name"] . ": " . $p["def"];
 				},
 				array_filter($c["props"], function($p){
 					if($p["type"] == "func") return true;

@@ -15,6 +15,8 @@ routes:
   children:
   - component_name: HomePage
     IndexRoute: true
+  - path: /prenota
+    component_name: TimeSelector 
   
 # 
 # Components section
@@ -22,21 +24,49 @@ routes:
 # These are the application components.
 # 
 # name: the name of the component.
+# html: the html/jsx code to render the component.
 # redux_actions: a list of redux modules from which import actions.
 # helper_components: a list of other components used by this component.
 # props: a list of properties used by this component.
 #   name: the prop name.
 #   subdreducer: the redux component name to which the prop belongs. 
 #   type: the prop type.
+#   def: if type is "func", is mandatory to define here the function.
 #
 # an html file in config/components/<name>/<name>.html will be associated to these components.
 # a js file in config/components/<name>/<prop_name>.js will be associated for each prop of type "func".
 #
 components:
+- name: HomePage
+  html: |
+    <div>
+      <Link className="button" to="/prenota">Prenota un campo</Link>
+    </div>
+  props: []
+  redux_actions: []
+  helper_components: []
+      
 - name: MainLayout
+  html: |
+    <div className="container">
+      {props.children}
+    </div>
   redux_actions: []
   helper_components: []
   props: []
+  
+- name: TimeSelector
+  html: |
+    <div>
+      <div className="desc">Quando vuoi giocare?</div>
+      <Link onClick={props.select_time} data-time="Mattina" className="button" to="step-field">Mattina<span>dalle 7:00 alle 12:00</span></Link>
+      <Link onClick={props.select_time} data-time="Pomeriggio" className="button" to="step-field">Pomeriggio<span>dalle 12:00 alle 18:00</span></Link>
+      <Link onClick={props.select_time} data-time="Sera" className="button" to="step-field">Sera<span>dalle 18:00 alle 22:00</span></Link>
+    </div>
+  redux_actions: []
+  helper_components: []
+  props: []
+
   
 # 
 # Redux Modules section
@@ -56,4 +86,8 @@ components:
 #   name: the name of the property.
 #   jsvalue: the value of the property.
 #
-redux_modules: []
+redux_modules:
+- name: booking
+  initialState: []
+  async_actions: []
+  actions: []

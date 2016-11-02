@@ -18,8 +18,8 @@ import { Link } from 'react-router';
 */
 
 const Component = (props) => (
-<div className="container">
-  {props.children}
+<div>
+  <Link className="button" to="/prenota">Prenota un campo</Link>
 </div>
 
 );
