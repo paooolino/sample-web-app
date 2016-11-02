@@ -7,7 +7,7 @@
 	*/
 	
 	$OUTPUT_ROOT = "../src/";
-	$CONFIG_ROOT = "config_app_fields/";
+	$CONFIG_ROOT = "config_app_fields_2/";
 	
 	/*
 		configuration end
@@ -19,15 +19,18 @@
 	
 	
 	$CONFIG = yaml_parse_file($CONFIG_ROOT . "/generator.config.yaml");
-
+		
+	// empty folder
+	emptyDir($OUTPUT_ROOT);
+	
 	// index.js
 	createFile("", "index.js", file_get_contents("templates/index.js"), array(
-		"LAYOUT_IMPORTS" => implode("\r\n", array_map(
-			function($layout){
-				return "import ". $layout["name"] ." from './layout_components/". $layout["name"] ."';";
-			}, 
-			$CONFIG["layout_components"])
-		),
+		"LAYOUT_IMPORTS" => implode("\r\n", traverse_tree($CONFIG["routes"],
+			function($node) {
+				return "import ". $node["component_name"] ." from './components/". $node["component_name"] ."';";
+			},
+			function($node) {}
+		)),
 		"REDUX_IMPORTS" => implode("\r\n", array_map(
 			function($module){
 				return "import ". $module["name"] ."Reducer from './redux/". $module["name"] ."';";
@@ -40,15 +43,37 @@
 			}, 
 			$CONFIG["redux_modules"])
 		),
-		"ROUTES_TREE" => implode("\r\n", array_map(
-			function($r){
-				return get_route_node($r);
+		"ROUTES_TREE" => implode("\r\n", traverse_tree($CONFIG["routes"], 
+			// callback open
+			function($node){
+				$tabs = str_repeat("\t", ($node["level"]+3));
+				if(isset($node["children"])) {
+					// when has childrens, return open tag.
+					return $tabs . '<Route path="'. $node["path"] .'" component={'. $node["component_name"] .'}>';
+				} else {
+					// when has not children, return unary tag.
+					if(isset($node["IndexRoute"]) && $node["IndexRoute"] == "true") {
+						// ...in case of IndexRoute.
+						return $tabs . '<IndexRoute component={'. $node["component_name"] .'} />';
+					} else {
+						// ...in case of another path.
+						return $tabs . '<Route path="'. $node["path"] .'" component={'. $node["component_name"] .'} />';
+					}
+				}
 			}, 
-			$CONFIG["routes"])
-		)
+			// callback close
+			function($node){
+				$tabs = str_repeat("\t", ($node["level"]+3));
+				if(isset($node["children"])) {
+					// close tag only if node had children.
+					return $tabs . '</Route>';
+				}
+			}
+		))
 	));
 	
 	// layout components
+	/*
 	foreach($CONFIG["layout_components"] as $c) {
 		createFile("layout_components/", $c["name"] . ".js", file_get_contents("templates/layout_component.js"), array(
 			"LAYOUT_COMPONENT_IMPORTS" => implode("\r\n", array_map(
@@ -66,6 +91,7 @@
 			"LAYOUT_COMPONENT_HTML" => get_component_html("", $c["name"])
 		));
 	}
+	*/
 	
 	// components
 	foreach($CONFIG["components"] as $c) {
@@ -209,26 +235,16 @@ function populate_template($body, $params) {
 	return $body;
 }
 
-function get_route_node($node, $level=0) {
-	$level++;
-	$code = '';
-	$tabs = str_repeat("\t", ($level+2));
-	
-	if(isset($node["children"])) {
-		$code .= $tabs . '<Route path="'. $node["path"] .'" component={'. $node["component_name"] .'}>' . "\r\n";
-		foreach($node["children"] as $n) {
-			$code .= get_route_node($n, $level);
+function traverse_tree($arr, $cb_open, $cb_close, $level=0, &$result=[]) {
+	foreach($arr as $node) {
+		$node["level"] = $level;
+		array_push($result, $cb_open($node));
+		if(isset($node["children"])) {
+			traverse_tree($node["children"], $cb_open, $cb_close, $level+1, $result);
 		}
-		$code .= $tabs . '</Route>' . "\r\n";
-	} else {
-		if(isset($node["IndexRoute"]) && $node["IndexRoute"] == "true") {
-			$code .= $tabs . '<IndexRoute component={'. $node["component_name"] .'} />' . "\r\n";
-		} else {
-			$code .= $tabs . '<Route path="'. $node["path"] .'" component={'. $node["component_name"] .'} />' . "\r\n";
-		}
+		array_push($result, $cb_close($node));
 	}
-
-	return $code;
+	return array_values(array_filter($result));
 }
 
 function get_component_html($path, $name) {
@@ -253,4 +269,21 @@ function get_handler($path, $name) {
 
 function mylog($s) {
 	echo "<p>" . $s . "</p>";
+}
+
+function emptyDir($dirPath) {
+	if (!is_dir($dirPath)) {
+		die("$dirPath must be a directory");
+	}
+	if (substr($dirPath, strlen($dirPath) - 1, 1) != '/') {
+		$dirPath .= '/';
+	}
+	$files = glob($dirPath . '*', GLOB_MARK);
+	foreach ($files as $file) {
+		if (is_dir($file)) {
+			emptyDir($file);
+		} else {
+			unlink($file);
+		}
+	}
 }
