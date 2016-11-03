@@ -14,7 +14,6 @@ import { ENDPOINT_HOST, ENDPOINT_PATH } from '../../config';
 	action constants
 */
 
-const CHANGE = 'login/CHANGE';
 const SUBMIT_REQUEST = 'login/SUBMIT_REQUEST';
 const SUBMIT_FAILURE = 'login/SUBMIT_FAILURE';
 const SUBMIT_SUCCESS = 'login/SUBMIT_SUCCESS';
@@ -25,8 +24,6 @@ const CLEAN_ERROR_MESSAGE = 'login/CLEAN_ERROR_MESSAGE';
 */
 
 const initialState = {
-	usr: '',
-	pwd: '',
 	isSubmitting: false,
 	errorMessage: '',
 	loginResult: ''
@@ -34,11 +31,6 @@ const initialState = {
 
 export default (state=initialState, action) => {
 	switch(action.type) {
-		case CHANGE:
-			return Object.assign({}, state, {
-				[action.name]: action.value
-			})
-
 		case SUBMIT_REQUEST:
 			return Object.assign({}, state, {
 				isSubmitting: true
@@ -116,13 +108,6 @@ export const submit = (usr, pwd) => {
 /*
 	sync action creators
 */
-
-export const change = (name, value) => ({
-	type: CHANGE,
-	name,
-	value
-})
-
 
 export const submit_request = () => ({
 	type: SUBMIT_REQUEST

@@ -9,6 +9,7 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
+import { reducer as formReducer } from 'redux-form';
 
 /*
 	internal imports
@@ -25,7 +26,8 @@ import loginReducer from './redux/login';
 
 let store = createStore(combineReducers({
 	login: loginReducer,
-  routing: routerReducer
+  routing: routerReducer,
+	form: formReducer
 }), applyMiddleware(thunk))
 
 store.subscribe(() =>	console.log(store.getState()));

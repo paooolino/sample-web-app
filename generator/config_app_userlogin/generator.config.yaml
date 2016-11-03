@@ -17,7 +17,40 @@ routes:
     IndexRoute: true
   - path: /login
     component_name: LoginPage 
-  
+
+#
+# Forms section
+#
+# These are special components decorated using the redux-form library.
+#
+# name: the name of the form component.
+# html: the html/jsx code to render the component.
+#
+forms:
+- name: LoginForm
+  html: |
+    <form onSubmit={props.handleSubmit}>
+      <div className="formRow">
+        <div className="formLabel">
+          Username
+        </div>
+        <div className="formField">
+          <Field name="usr" component="input" type="text" />
+        </div>
+      </div>
+      <div className="formRow">
+        <div className="formLabel">
+          Password
+        </div>
+        <div className="formField">
+          <Field name="pwd" component="input" type="password" />
+        </div>
+      </div>
+      <div className="formRow">
+        <button disabled={props.pristine || props.submitting}>Login</button>
+      </div>
+    </form>
+    
 # 
 # Components section
 #
@@ -97,44 +130,12 @@ components:
 - name: LoginPage
   html: |
     <div className="LoginPage">
-      {props.isSubmitting ?
-        <span>Requesting...</span>
-      :
-        <form onSubmit={props.submit_handler}>
-          <div className="formRow">
-            <div className="formLabel">
-              Username
-            </div>
-            <div className="formField">
-              <input required name="usr" onChange={props.change_handler} value={props.usr} />
-            </div>
-          </div>
-          <div className="formRow">
-            <div className="formLabel">
-              Password
-            </div>
-            <div className="formField">
-              <input required type="password" onChange={props.change_handler} name="pwd" value={props.pwd} />
-            </div>
-          </div>
-          <div className="formRow">
-            <button>Login</button>
-          </div>
-        </form>
-      }
+      <LoginForm onSubmit={props.handleSubmit} />
       {props.errorMessage!='' && <Popup close_handler={props.clean_error_message_handler} message={props.errorMessage} />}
     </div>
   redux_actions: [login]
-  helper_components: [Popup]
+  helper_components: [Popup, LoginForm]
   props:
-  - name: usr
-    type: string
-    subreducer: login
-    
-  - name: pwd
-    type: string
-    subreducer: login
-    
   - name: isSubmitting
     type: bool
     subreducer: login
@@ -142,20 +143,12 @@ components:
   - name: errorMessage
     type: string
     subreducer: login
-    
-  - name: change_handler
+          
+  - name: handleSubmit
     type: func
     def: |
-      (evt) => {
-        dispatch(actions_login.change(evt.target.name, evt.target.value));
-      }
-      
-  - name: submit_handler
-    type: func
-    def: |
-      (evt) => {
-        evt.preventDefault();
-        dispatch(actions_login.submit(evt.target.usr.value, evt.target.pwd.value));
+      (data) => {
+        dispatch(actions_login.submit(data.usr, data.pwd));
       }
       
   - name: clean_error_message_handler
@@ -164,8 +157,6 @@ components:
       (evt) => {
         dispatch(actions_login.clean_error_message());
       }
-    
-
   
 # 
 # Redux Modules section
@@ -195,10 +186,6 @@ redux_modules:
 - name: login
 
   initialState:
-  - name: usr
-    jsvalue: "''"
-  - name: pwd
-    jsvalue: "''"
   - name: isSubmitting
     jsvalue: "false"
   - name: errorMessage
@@ -206,13 +193,7 @@ redux_modules:
   - name: loginResult
     jsvalue: "''"
     
-  actions:
-  - name: CHANGE
-    inputs: [name, value]
-    effects:
-    - key: "[action.name]"
-      newValue: action.value
-      
+  actions:      
   - name: SUBMIT_REQUEST
     inputs: []
     effects:

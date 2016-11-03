@@ -12,6 +12,7 @@ import { Link } from 'react-router';
 
 import * as actions_login from '../redux/login';
 import Popup from './Popup';
+import LoginForm from './LoginForm';
 
 /*
 	stateless component
@@ -19,31 +20,7 @@ import Popup from './Popup';
 
 const Component = (props) => (
 <div className="LoginPage">
-  {props.isSubmitting ?
-    <span>Requesting...</span>
-  :
-    <form onSubmit={props.submit_handler}>
-      <div className="formRow">
-        <div className="formLabel">
-          Username
-        </div>
-        <div className="formField">
-          <input required name="usr" onChange={props.change_handler} value={props.usr} />
-        </div>
-      </div>
-      <div className="formRow">
-        <div className="formLabel">
-          Password
-        </div>
-        <div className="formField">
-          <input required type="password" onChange={props.change_handler} name="pwd" value={props.pwd} />
-        </div>
-      </div>
-      <div className="formRow">
-        <button>Login</button>
-      </div>
-    </form>
-  }
+  <LoginForm onSubmit={props.handleSubmit} />
   {props.errorMessage!='' && <Popup close_handler={props.clean_error_message_handler} message={props.errorMessage} />}
 </div>
 
@@ -61,12 +38,9 @@ const Component = (props) => (
 */
 
 Component.propTypes = {
-	usr: PropTypes.string.isRequired,
-	pwd: PropTypes.string.isRequired,
 	isSubmitting: PropTypes.bool.isRequired,
 	errorMessage: PropTypes.string.isRequired,
-	change_handler: PropTypes.func.isRequired,
-	submit_handler: PropTypes.func.isRequired,
+	handleSubmit: PropTypes.func.isRequired,
 	clean_error_message_handler: PropTypes.func.isRequired
 }
 
@@ -75,13 +49,8 @@ Component.propTypes = {
 */
 
 const mapDispatchToProps = (dispatch) => ({
-	change_handler: (evt) => {
-  dispatch(actions_login.change(evt.target.name, evt.target.value));
-}
-,
-	submit_handler: (evt) => {
-  evt.preventDefault();
-  dispatch(actions_login.submit(evt.target.usr.value, evt.target.pwd.value));
+	handleSubmit: (data) => {
+  dispatch(actions_login.submit(data.usr, data.pwd));
 }
 ,
 	clean_error_message_handler: (evt) => {
@@ -95,8 +64,6 @@ const mapDispatchToProps = (dispatch) => ({
 */
 
 const mapStateToProps = (state) => ({
-	usr: state.login.usr,
-	pwd: state.login.pwd,
 	isSubmitting: state.login.isSubmitting,
 	errorMessage: state.login.errorMessage	
 });

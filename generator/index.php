@@ -114,6 +114,13 @@
 			));
 	}
 	
+	// form components
+	foreach($CONFIG["forms"] as $c) {
+		createFile("components/", $c["name"] . ".js", file_get_contents("templates/form_component.js"), array(
+			"COMPONENT_HTML" => $c["html"]
+		));
+	}
+	
 	// components
 	foreach(array_filter($CONFIG["components"], function($c){
 			return isset($c["redux_actions"]);
