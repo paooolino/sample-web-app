@@ -21,12 +21,14 @@
     "babel-preset-react": "^6.16.0",
     "enzyme": "^2.5.1",
     "expect": "^1.20.2",
+    "opn": "^4.0.2",
     "react-addons-test-utils": "^15.3.2",
     "zombie": "^4.2.1"
   },
   "scripts": {
     "test": "mocha --compilers js:babel-register --recursive tests",
     "test:unit": "mocha --compilers js:babel-register --recursive tests/unit/ --watch",
+    "open": "node open.js & npm start",
     "start": "webpack-dev-server --inline --content-base build/ --history-api-fallback",
     "build": "webpack"
   },

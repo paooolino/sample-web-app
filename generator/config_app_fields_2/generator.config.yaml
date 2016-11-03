@@ -30,7 +30,7 @@ routes:
 # props: a list of properties used by this component.
 #   name: the prop name.
 #   subdreducer: the redux component name to which the prop belongs. 
-#   type: the prop type.
+#   type: the prop type (func|string)
 #   def: if type is "func", is mandatory to define here the function.
 #
 # an html file in config/components/<name>/<name>.html will be associated to these components.
@@ -65,7 +65,16 @@ components:
     </div>
   redux_actions: []
   helper_components: []
-  props: []
+  props:
+  - name: select_time
+    subreducer: booking
+    type: func
+    def: |
+      (evt) => {
+        evt.preventDefault();
+        console.log(evt.target);
+      }
+    
 
   
 # 

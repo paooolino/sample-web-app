@@ -8,7 +8,7 @@ import fetch from 'isomorphic-fetch'
 	internal imports
 */
 
-//import { ENDPOINT_HOST, ENDPOINT_PATH } from '../config';
+import { ENDPOINT_HOST, ENDPOINT_PATH } from '../../config';
 
 /*
 	action constants

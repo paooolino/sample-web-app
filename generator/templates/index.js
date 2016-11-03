@@ -26,6 +26,8 @@ let store = createStore(combineReducers({
   routing: routerReducer
 }), applyMiddleware(thunk))
 
+store.subscribe(() =>	console.log(store.getState()));
+
 /*
 	history <> store sync
 */

@@ -18,11 +18,9 @@ import { Link } from 'react-router';
 */
 
 const Component = (props) => (
-<div>
-  <div className="desc">Quando vuoi giocare?</div>
-  <Link onClick={props.select_time} data-time="Mattina" className="button" to="step-field">Mattina<span>dalle 7:00 alle 12:00</span></Link>
-  <Link onClick={props.select_time} data-time="Pomeriggio" className="button" to="step-field">Pomeriggio<span>dalle 12:00 alle 18:00</span></Link>
-  <Link onClick={props.select_time} data-time="Sera" className="button" to="step-field">Sera<span>dalle 18:00 alle 22:00</span></Link>
+<div className="Nav">
+  <Link to="/">Home</Link>
+  <Link to="/login">Login</Link>
 </div>
 
 );

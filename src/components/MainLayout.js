@@ -11,14 +11,15 @@ import { Link } from 'react-router';
 */
 
 
-
+import Nav from './Nav';
 
 /*
 	stateless component
 */
 
 const Component = (props) => (
-<div className="container">
+<div className="MainLayout style-normal">
+  <Nav />
   {props.children}
 </div>
 

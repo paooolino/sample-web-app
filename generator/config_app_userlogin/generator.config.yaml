@@ -1,0 +1,198 @@
+# 
+# Routes section
+#
+# Bind each route to one component.
+# Routes may be nested.
+# 
+# component_name: the name of the layout component.
+# path: the url path.
+# children: (optional) a list of nested layout components.
+# IndexRoute: (optional) if set to true identifies the home route.
+#
+routes:
+- path: /
+  component_name: MainLayout
+  children:
+  - component_name: HomePage
+    IndexRoute: true
+  - path: /login
+    component_name: LoginPage 
+  
+# 
+# Components section
+#
+# These are the application components.
+# 
+# name: the name of the component.
+# html: the html/jsx code to render the component.
+# redux_actions: a list of redux modules from which import actions.
+# helper_components: a list of other components used by this component.
+# props: a list of properties used by this component.
+#   name: the prop name.
+#   subreducer: the redux component name to which the prop belongs. 
+#   type: the prop type (func|string)
+#   def: if type is "func", is mandatory to define here the function.
+#        action creators should be referenced as "actions_<subreducer>."
+#
+components:
+- name: MainLayout
+  html: |
+    <div className="MainLayout style-normal">
+      <Nav />
+      {props.children}
+    </div>
+  redux_actions: []
+  helper_components: [Nav]
+  props: []
+  
+- name: Nav
+  html: |
+    <div className="Nav">
+      <Link to="/">Home</Link>
+      <Link to="/login">Login</Link>
+    </div>
+  redux_actions: []
+  helper_components: []
+  props: []
+  
+- name: HomePage
+  html: |
+    <div className="HomePage">
+      HomePage
+    </div>
+  redux_actions: []
+  helper_components: []
+  props: []
+  
+- name: LoginPage
+  html: |
+    <div className="LoginPage">
+      {props.isSubmitting ?
+        <span>Requesting...</span>
+      :
+        <form onSubmit={props.submit_handler}>
+          <div className="formRow">
+            <div className="formLabel">
+              Username
+            </div>
+            <div className="formField">
+              <input name="usr" onChange={props.change_handler} value={props.usr} />
+            </div>
+          </div>
+          <div className="formRow">
+            <div className="formLabel">
+              Password
+            </div>
+            <div className="formField">
+              <input type="password" onChange={props.change_handler} name="pwd" value={props.pwd} />
+            </div>
+          </div>
+          <div className="formRow">
+            <button>Login</button>
+          </div>
+        </form>
+      }
+    </div>
+  redux_actions: [login]
+  helper_components: []
+  props:
+  - name: usr
+    type: string
+    subreducer: login
+    
+  - name: pwd
+    type: string
+    subreducer: login
+    
+  - name: change_handler
+    type: func
+    def: |
+      (evt) => {
+        dispatch(actions_login.change(evt.target.name, evt.target.value));
+      }
+      
+  - name: submit_handler
+    type: func
+    def: |
+      (evt) => {
+        evt.preventDefault();
+        dispatch(actions_login.submit(evt.target.usr.value, evt.target.pwd.value));
+      }
+    
+
+  
+# 
+# Redux Modules section
+#
+# define actions and reducers.
+# 
+# name: the name of the module.
+# initialState: a list of elements defining the initial shape of the state.
+#   name: the name of the property.
+#   jsvalue: the value of the property.
+# actions: a list of sync actions used by the module.
+#   name: the name of the sync action (uppercase).
+#   inputs: a list of properties to pass as inputs to the action creator.
+#           example: [name, value]
+#           these names will be referenced in effects as "action.<name>".
+#   effects: a list of key>newValue properties to set when the action is dispatched.
+#            references to input names must be prefixed with "action.".
+#            a key may be dynamic. Surround it with double quotes and brackets
+#            example: "[action.name]"
+# async_actions: a list of async actions defined by the module.
+#   name: the name of the async action (lowercase).
+#   inputs: a list of properties to pass as inputs to the action creator.
+#         the same variables will be passed to the server.
+#   request_action: the name of the action to dispatch when requesting.
+#
+redux_modules:
+- name: login
+
+  initialState:
+  - name: usr
+    jsvalue: "''"
+  - name: pwd
+    jsvalue: "''"
+  - name: isSubmitting
+    jsvalue: "false"
+  - name: errorMessage
+    jsvalue: "''"
+  - name: loginResult
+    jsvalue: "''"
+    
+  actions:
+  - name: CHANGE
+    inputs: [name, value]
+    effects:
+    - key: "[action.name]"
+      newValue: action.value
+      
+  - name: SUBMIT_REQUEST
+    inputs: []
+    effects:
+    - key: isSubmitting
+      newValue: "true"
+      
+  - name: SUBMIT_FAILURE
+    inputs: [err]
+    effects:
+    - key: errorMessage
+      newValue: action.err
+    - key: isSubmitting
+      newValue: "false"
+      
+  - name: SUBMIT_SUCCESS
+    inputs: [json]
+    effects:
+    - key: loginResult
+      newValue: action.json
+    - key: isSubmitting
+      newValue: "false"
+      
+  async_actions:
+  - name: submit
+    inputs: [usr, pwd]
+    request_action_name: SUBMIT_REQUEST
+    failure_action_name: SUBMIT_FAILURE
+    success_action_name: SUBMIT_SUCCESS
+    

@@ -16,17 +16,19 @@ import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 
 import MainLayout from './components/MainLayout';
 import HomePage from './components/HomePage';
-import TimeSelector from './components/TimeSelector';
-import bookingReducer from './redux/booking';
+import LoginPage from './components/LoginPage';
+import loginReducer from './redux/login';
 
 /*
 	store creation
 */
 
 let store = createStore(combineReducers({
-	booking: bookingReducer,
+	login: loginReducer,
   routing: routerReducer
 }), applyMiddleware(thunk))
+
+store.subscribe(() =>	console.log(store.getState()));
 
 /*
 	history <> store sync
@@ -43,7 +45,7 @@ ReactDOM.render(
     <Router history={history}>
 			<Route path="/" component={MainLayout}>
 				<IndexRoute component={HomePage} />
-				<Route path="/prenota" component={TimeSelector} />
+				<Route path="/login" component={LoginPage} />
 			</Route>
     </Router>
   </Provider>,
