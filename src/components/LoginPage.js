@@ -11,7 +11,7 @@ import { Link } from 'react-router';
 */
 
 import * as actions_login from '../redux/login';
-
+import Popup from './Popup';
 
 /*
 	stateless component
@@ -44,6 +44,7 @@ const Component = (props) => (
       </div>
     </form>
   }
+  {props.errorMessage!='' && <Popup close_handler={props.clean_error_message_handler} message={props.errorMessage} />}
 </div>
 
 );
@@ -62,8 +63,11 @@ const Component = (props) => (
 Component.propTypes = {
 	usr: PropTypes.string.isRequired,
 	pwd: PropTypes.string.isRequired,
+	isSubmitting: PropTypes.bool.isRequired,
+	errorMessage: PropTypes.string.isRequired,
 	change_handler: PropTypes.func.isRequired,
-	submit_handler: PropTypes.func.isRequired
+	submit_handler: PropTypes.func.isRequired,
+	clean_error_message_handler: PropTypes.func.isRequired
 }
 
 /*
@@ -79,6 +83,10 @@ const mapDispatchToProps = (dispatch) => ({
   evt.preventDefault();
   dispatch(actions_login.submit(evt.target.usr.value, evt.target.pwd.value));
 }
+,
+	clean_error_message_handler: (evt) => {
+  dispatch(actions_login.clean_error_message());
+}
 	
 });
 
@@ -88,7 +96,9 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
 	usr: state.login.usr,
-	pwd: state.login.pwd	
+	pwd: state.login.pwd,
+	isSubmitting: state.login.isSubmitting,
+	errorMessage: state.login.errorMessage	
 });
 
 /*

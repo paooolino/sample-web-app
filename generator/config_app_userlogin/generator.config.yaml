@@ -26,13 +26,16 @@ routes:
 # name: the name of the component.
 # html: the html/jsx code to render the component.
 # redux_actions: a list of redux modules from which import actions.
+#   IMPORTANT: if not set, turn the component into STATELESS.
 # helper_components: a list of other components used by this component.
 # props: a list of properties used by this component.
 #   name: the prop name.
 #   subreducer: the redux component name to which the prop belongs. 
+#     NOT NEEDED FOR STATELESS.
 #   type: the prop type (func|string)
 #   def: if type is "func", is mandatory to define here the function.
 #        action creators should be referenced as "actions_<subreducer>."
+#     NOT NEEDED FOR STATELESS.
 #
 components:
 - name: MainLayout
@@ -63,7 +66,22 @@ components:
   redux_actions: []
   helper_components: []
   props: []
-  
+
+- name: Popup
+  html: |
+    <div className="Popup">
+      <div className="Popup_inner">
+        <div className="Popup_message">{props.message}</div>
+          <button onClick={props.close_handler}>OK</button>
+      </div>
+    </div>
+  helper_components: []
+  props:
+  - name: message
+    type: string
+  - name: close_handler
+    type: func
+    
 - name: LoginPage
   html: |
     <div className="LoginPage">
@@ -92,15 +110,24 @@ components:
           </div>
         </form>
       }
+      {props.errorMessage!='' && <Popup close_handler={props.clean_error_message_handler} message={props.errorMessage} />}
     </div>
   redux_actions: [login]
-  helper_components: []
+  helper_components: [Popup]
   props:
   - name: usr
     type: string
     subreducer: login
     
   - name: pwd
+    type: string
+    subreducer: login
+    
+  - name: isSubmitting
+    type: bool
+    subreducer: login
+    
+  - name: errorMessage
     type: string
     subreducer: login
     
@@ -117,6 +144,13 @@ components:
       (evt) => {
         evt.preventDefault();
         dispatch(actions_login.submit(evt.target.usr.value, evt.target.pwd.value));
+      }
+      
+  - name: clean_error_message_handler
+    type: func
+    def: |
+      (evt) => {
+        dispatch(actions_login.clean_error_message());
       }
     
 
@@ -145,7 +179,7 @@ components:
 #         the same variables will be passed to the server.
 #   request_action: the name of the action to dispatch when requesting.
 #
-redux_modules:
+redux_modules:    
 - name: login
 
   initialState:
@@ -188,6 +222,12 @@ redux_modules:
       newValue: action.json
     - key: isSubmitting
       newValue: "false"
+      
+  - name: CLEAN_ERROR_MESSAGE
+    inputs: []
+    effects:
+    - key: errorMessage
+      newValue: "''"
       
   async_actions:
   - name: submit

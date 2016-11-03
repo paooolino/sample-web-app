@@ -93,45 +93,68 @@
 	}
 	*/
 	
+	// stateless components
+	foreach(array_filter($CONFIG["components"], function($c){
+			return !isset($c["redux_actions"]);
+		}) as $c) {
+			createFile("components/", $c["name"] . ".js", file_get_contents("templates/stateless_component.js"), array(
+				"HELPER_COMPONENTS" => implode("\r\n", array_map(
+					function($hc){
+						return "import ". $hc ." from './". $hc ."';";
+					}, 
+					$c["helper_components"])
+				),
+				"COMPONENT_HTML" => $c["html"],
+				"PROPTYPES" => implode(",\r\n", array_map(
+					function($p){
+						return "\t" . $p["name"] . ": PropTypes." . $p["type"] . ".isRequired";
+					},
+					$c["props"])
+				)			
+			));
+	}
+	
 	// components
-	foreach($CONFIG["components"] as $c) {
-		createFile("components/", $c["name"] . ".js", file_get_contents("templates/component.js"), array(
-			"REDUX_ACTIONS" => implode("\r\n", array_map(
-				function($redux){
-					return "import * as actions_". $redux ." from '../redux/". $redux ."';";
-				}, 
-				$c["redux_actions"])
-			),
-			"HELPER_COMPONENTS" => implode("\r\n", array_map(
-				function($hc){
-					return "import ". $hc ." from './". $hc ."';";
-				}, 
-				$c["helper_components"])
-			),
-			"COMPONENT_HTML" => $c["html"],
-			"PROPTYPES" => implode(",\r\n", array_map(
-				function($p){
-					return "\t" . $p["name"] . ": PropTypes." . $p["type"] . ".isRequired";
-				},
-				$c["props"])
-			),
-			"DISPATCH_TO_PROPS" => implode(",\r\n", array_map(
-				function($p){
-					return "\t" . $p["name"] . ": " . $p["def"];
-				},
-				array_filter($c["props"], function($p){
-					if($p["type"] == "func") return true;
-				}))
-			),
-			"STATE_TO_PROPS" => implode(",\r\n", array_map(
-				function($p){
-					return "\t" . $p["name"] . ": state" . ($p["subreducer"] == "" ? "" : "." . $p["subreducer"]) . "." . $p["name"];
-				},
-				array_filter($c["props"], function($p){
-					if($p["type"] != "func") return true;
-				}))
-			)
-		));
+	foreach(array_filter($CONFIG["components"], function($c){
+			return isset($c["redux_actions"]);
+		}) as $c) {
+			createFile("components/", $c["name"] . ".js", file_get_contents("templates/component.js"), array(
+				"REDUX_ACTIONS" => implode("\r\n", array_map(
+					function($redux){
+						return "import * as actions_". $redux ." from '../redux/". $redux ."';";
+					}, 
+					$c["redux_actions"])
+				),
+				"HELPER_COMPONENTS" => implode("\r\n", array_map(
+					function($hc){
+						return "import ". $hc ." from './". $hc ."';";
+					}, 
+					$c["helper_components"])
+				),
+				"COMPONENT_HTML" => $c["html"],
+				"PROPTYPES" => implode(",\r\n", array_map(
+					function($p){
+						return "\t" . $p["name"] . ": PropTypes." . $p["type"] . ".isRequired";
+					},
+					$c["props"])
+				),
+				"DISPATCH_TO_PROPS" => implode(",\r\n", array_map(
+					function($p){
+						return "\t" . $p["name"] . ": " . $p["def"];
+					},
+					array_filter($c["props"], function($p){
+						if($p["type"] == "func") return true;
+					}))
+				),
+				"STATE_TO_PROPS" => implode(",\r\n", array_map(
+					function($p){
+						return "\t" . $p["name"] . ": state" . ($p["subreducer"] == "" ? "" : "." . $p["subreducer"]) . "." . $p["name"];
+					},
+					array_filter($c["props"], function($p){
+						if($p["type"] != "func") return true;
+					}))
+				)
+			));
 	}
 	
 	// redux

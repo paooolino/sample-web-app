@@ -18,6 +18,7 @@ const CHANGE = 'login/CHANGE';
 const SUBMIT_REQUEST = 'login/SUBMIT_REQUEST';
 const SUBMIT_FAILURE = 'login/SUBMIT_FAILURE';
 const SUBMIT_SUCCESS = 'login/SUBMIT_SUCCESS';
+const CLEAN_ERROR_MESSAGE = 'login/CLEAN_ERROR_MESSAGE';
 
 /*
 	reducer
@@ -45,12 +46,19 @@ export default (state=initialState, action) => {
 
 		case SUBMIT_FAILURE:
 			return Object.assign({}, state, {
-				errorMessage: action.err
+				errorMessage: action.err,
+				isSubmitting: false
 			})
 
 		case SUBMIT_SUCCESS:
 			return Object.assign({}, state, {
-				loginResult: action.json
+				loginResult: action.json,
+				isSubmitting: false
+			})
+
+		case CLEAN_ERROR_MESSAGE:
+			return Object.assign({}, state, {
+				errorMessage: ''
 			})
 
 		default:
@@ -130,5 +138,10 @@ export const submit_failure = (err) => ({
 export const submit_success = (json) => ({
 	type: SUBMIT_SUCCESS,
 	json
+})
+
+
+export const clean_error_message = () => ({
+	type: CLEAN_ERROR_MESSAGE
 })
 
