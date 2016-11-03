@@ -3,13 +3,11 @@
 */
 
 import React, {PropTypes} from 'react';
-import {connect} from 'react-redux';
 import { Link } from 'react-router';
 
 /*
 	internal imports
 */
-
 
 import Nav from './Nav';
 
@@ -40,27 +38,4 @@ Component.propTypes = {
 
 }
 
-/*
-	dispatches
-*/
-
-const mapDispatchToProps = (dispatch) => ({
-	
-});
-
-/*
-	state
-*/
-
-const mapStateToProps = (state) => ({
-	
-});
-
-/*
-	connect & export
-*/
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(Component);
+export default Component;

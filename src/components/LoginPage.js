@@ -28,7 +28,7 @@ const Component = (props) => (
           Username
         </div>
         <div className="formField">
-          <input name="usr" onChange={props.change_handler} value={props.usr} />
+          <input required name="usr" onChange={props.change_handler} value={props.usr} />
         </div>
       </div>
       <div className="formRow">
@@ -36,7 +36,7 @@ const Component = (props) => (
           Password
         </div>
         <div className="formField">
-          <input type="password" onChange={props.change_handler} name="pwd" value={props.pwd} />
+          <input required type="password" onChange={props.change_handler} name="pwd" value={props.pwd} />
         </div>
       </div>
       <div className="formRow">

@@ -38,35 +38,44 @@ routes:
 #     NOT NEEDED FOR STATELESS.
 #
 components:
+#
+# MainLayout stateless component
+# -----------------------------------------------------------------------------
 - name: MainLayout
   html: |
     <div className="MainLayout style-normal">
       <Nav />
       {props.children}
     </div>
-  redux_actions: []
   helper_components: [Nav]
   props: []
   
+#
+# Nav stateless component
+# -----------------------------------------------------------------------------  
 - name: Nav
   html: |
     <div className="Nav">
       <Link to="/">Home</Link>
       <Link to="/login">Login</Link>
     </div>
-  redux_actions: []
   helper_components: []
   props: []
-  
+
+#
+# HomePage stateless component
+# -----------------------------------------------------------------------------    
 - name: HomePage
   html: |
     <div className="HomePage">
       HomePage
     </div>
-  redux_actions: []
   helper_components: []
   props: []
 
+#
+# Popup stateless component
+# -----------------------------------------------------------------------------    
 - name: Popup
   html: |
     <div className="Popup">
@@ -81,7 +90,10 @@ components:
     type: string
   - name: close_handler
     type: func
-    
+
+#
+# LoginPage component
+# -----------------------------------------------------------------------------        
 - name: LoginPage
   html: |
     <div className="LoginPage">
@@ -94,7 +106,7 @@ components:
               Username
             </div>
             <div className="formField">
-              <input name="usr" onChange={props.change_handler} value={props.usr} />
+              <input required name="usr" onChange={props.change_handler} value={props.usr} />
             </div>
           </div>
           <div className="formRow">
@@ -102,7 +114,7 @@ components:
               Password
             </div>
             <div className="formField">
-              <input type="password" onChange={props.change_handler} name="pwd" value={props.pwd} />
+              <input required type="password" onChange={props.change_handler} name="pwd" value={props.pwd} />
             </div>
           </div>
           <div className="formRow">
