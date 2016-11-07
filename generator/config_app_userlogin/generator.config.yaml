@@ -192,6 +192,8 @@ redux_modules:
     jsvalue: "''"
   - name: loginResult
     jsvalue: "''"
+  - name: isLoggedIn
+    jsvalue: "false"
     
   actions:      
   - name: SUBMIT_REQUEST
@@ -215,6 +217,10 @@ redux_modules:
       newValue: action.json
     - key: isSubmitting
       newValue: "false"
+    - key: errorMessage
+      newValue: "''"
+    - key: isLoggedIn
+      newValue: "true"
       
   - name: CLEAN_ERROR_MESSAGE
     inputs: []

@@ -1,13 +1,24 @@
 <?php
+
 namespace SlimRest;
 
+use \Psr\Http\Message\ServerRequestInterface as Request;
+use \Psr\Http\Message\ResponseInterface as Response;
 use RedBeanPHP\R as R;
 
+/**
+ *	The main API Application class.
+ */
 class App {
 	
+	/** 
+	 *	The Slim Application.
+	 */
 	private $slim;
-	private $db;
 	
+	/**
+	 *	The constructor.
+	 */
 	public function __construct() {
 		$this->slim = new \Slim\App(array(
 			"settings" => array(
@@ -20,28 +31,24 @@ class App {
 		$this->setRoutes();
 	}
 	
+	/**
+	 *	Set the unique route for the endpoint App.
+	 */	
 	private function setRoutes() {
-		this->slim->post('/auth', '\SlimRest\Models\Auth:getAuthCode');
-		
-		/*
-		// Create
-		$this->slim->post('/users', '\SlimRest\Models\Users:newItem');
-		$this->slim->post('/countries', '\SlimRest\Models\Countries:newItem');
-		
-		// Read
-		$this->slim->get('/users', '\SlimRest\Models\Users:getItems');
-		$this->slim->get('/countries', '\SlimRest\Models\Countries:getItems');
-		$this->slim->get('/users/{id}', '\SlimRest\Models\Users:getItem');
-		$this->slim->get('/countries/{id}', '\SlimRest\Models\Countries:getItem');
-		
-		// Update
-		$this->slim->put('/users/{id}', '\SlimRest\Models\Users:updateItem');
-		$this->slim->put('/countries/{id}', '\SlimRest\Models\Countries:updateItem');
-		
-		// Delete
-		$this->slim->delete('/users/{id}', '\SlimRest\Models\Users:deleteItem');
-		$this->slim->delete('/countries/{id}', '\SlimRest\Models\Countries:deleteItem');
-		*/
+		$this->slim->post('/', array($this, 'route'));
+	}
+	
+	public function route(Request $request, Response $response) {
+		$data = json_decode($request->getBody());
+		$item = R::findOne('users', 'user = ? AND pass = ?', array($data->usr, $data->pwd));
+		if($item) {
+			return $response->withJson(R::exportAll($item));
+		} else {
+			return $response
+				->withStatus(401)
+				->withHeader('Content-Type', 'text/html')
+				->write('Unauthorized');
+		}
 	}
 	
 	public function run() {

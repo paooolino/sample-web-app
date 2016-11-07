@@ -45,7 +45,8 @@ export default (state=initialState, action) => {
 		case SUBMIT_SUCCESS:
 			return Object.assign({}, state, {
 				loginResult: action.json,
-				isSubmitting: false
+				isSubmitting: false,
+				errorMessage: ''
 			})
 
 		case CLEAN_ERROR_MESSAGE:
