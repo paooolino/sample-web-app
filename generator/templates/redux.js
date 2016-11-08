@@ -2,7 +2,8 @@
 	external imports
 */
 
-import fetch from 'isomorphic-fetch'
+import fetch from 'isomorphic-fetch';
+import { push } from 'react-router-redux';
 
 /*
 	internal imports

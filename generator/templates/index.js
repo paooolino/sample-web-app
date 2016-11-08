@@ -8,7 +8,7 @@ import { combineReducers, createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
+import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
 
 /*
@@ -26,7 +26,7 @@ let store = createStore(combineReducers({
 	##REDUCERS_LIST##
   routing: routerReducer,
 	form: formReducer
-}), applyMiddleware(thunk))
+}), applyMiddleware(thunk, routerMiddleware(browserHistory)));
 
 store.subscribe(() =>	console.log(store.getState()));
 

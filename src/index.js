@@ -8,7 +8,7 @@ import { combineReducers, createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
+import { syncHistoryWithStore, routerReducer, routerMiddleware } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
 
 /*
@@ -18,6 +18,7 @@ import { reducer as formReducer } from 'redux-form';
 import MainLayout from './components/MainLayout';
 import HomePage from './components/HomePage';
 import LoginPage from './components/LoginPage';
+import DashboardPage from './components/DashboardPage';
 import loginReducer from './redux/login';
 
 /*
@@ -28,7 +29,7 @@ let store = createStore(combineReducers({
 	login: loginReducer,
   routing: routerReducer,
 	form: formReducer
-}), applyMiddleware(thunk))
+}), applyMiddleware(thunk, routerMiddleware(browserHistory)));
 
 store.subscribe(() =>	console.log(store.getState()));
 
@@ -48,6 +49,7 @@ ReactDOM.render(
 			<Route path="/" component={MainLayout}>
 				<IndexRoute component={HomePage} />
 				<Route path="/login" component={LoginPage} />
+				<Route path="/dashboard" component={DashboardPage} />
 			</Route>
     </Router>
   </Provider>,

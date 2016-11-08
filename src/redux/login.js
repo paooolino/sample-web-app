@@ -2,7 +2,8 @@
 	external imports
 */
 
-import fetch from 'isomorphic-fetch'
+import fetch from 'isomorphic-fetch';
+import { push } from 'react-router-redux';
 
 /*
 	internal imports
@@ -26,7 +27,8 @@ const CLEAN_ERROR_MESSAGE = 'login/CLEAN_ERROR_MESSAGE';
 const initialState = {
 	isSubmitting: false,
 	errorMessage: '',
-	loginResult: ''
+	loginResult: '',
+	isLoggedIn: false
 };
 
 export default (state=initialState, action) => {
@@ -46,7 +48,8 @@ export default (state=initialState, action) => {
 			return Object.assign({}, state, {
 				loginResult: action.json,
 				isSubmitting: false,
-				errorMessage: ''
+				errorMessage: '',
+				isLoggedIn: true
 			})
 
 		case CLEAN_ERROR_MESSAGE:
@@ -92,6 +95,8 @@ export const submit = (usr, pwd) => {
 				dispatch(submit_failure(response.status + ' - ' + response.statusText));
 			} else {
 				dispatch(submit_success(response.json()));
+				dispatch(push('/dashboard'));
+
 			}
     }).catch(err => {
 			// Error: handle it the way you like, undoing the optimistic update,

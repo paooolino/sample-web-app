@@ -27,6 +27,7 @@ export const ##ACTION_NAME## = (##ASYNC_INPUTS##) => {
 				dispatch(##FAILURE_ACTION_NAME##(response.status + ' - ' + response.statusText));
 			} else {
 				dispatch(##SUCCESS_ACTION_NAME##(response.json()));
+				##ON_SUCCESS##
 			}
     }).catch(err => {
 			// Error: handle it the way you like, undoing the optimistic update,

@@ -203,7 +203,8 @@
 						"ASYNC_INPUTS" => implode(", ", $a["inputs"]),
 						"REQUEST_ACTION_NAME" => strtolower($a["request_action_name"]),
 						"FAILURE_ACTION_NAME" => strtolower($a["failure_action_name"]),
-						"SUCCESS_ACTION_NAME" => strtolower($a["success_action_name"])
+						"SUCCESS_ACTION_NAME" => strtolower($a["success_action_name"]),
+						"ON_SUCCESS" => $a["onSuccess"]
 					));
 					/*
 					$html .= "export const ". $a["name"] ." = (". implode(", ", $a["inputs"]) .") => (dispatch) => {\r\n";

@@ -16,7 +16,9 @@ routes:
   - component_name: HomePage
     IndexRoute: true
   - path: /login
-    component_name: LoginPage 
+    component_name: LoginPage
+  - path: /dashboard
+    component_name: DashboardPage
 
 #
 # Forms section
@@ -124,6 +126,17 @@ components:
   - name: close_handler
     type: func
 
+#
+# DashboardPage stateless component
+# -----------------------------------------------------------------------------    
+- name: DashboardPage
+  html: |
+    <div className="DashboardPage">
+      DashboardPage
+    </div>
+  helper_components: []
+  props: []
+  
 #
 # LoginPage component
 # -----------------------------------------------------------------------------        
@@ -234,4 +247,7 @@ redux_modules:
     request_action_name: SUBMIT_REQUEST
     failure_action_name: SUBMIT_FAILURE
     success_action_name: SUBMIT_SUCCESS
+    onSuccess: |
+      dispatch(push('/dashboard'));
+
     
