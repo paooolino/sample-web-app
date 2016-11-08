@@ -19,6 +19,7 @@ const SUBMIT_REQUEST = 'login/SUBMIT_REQUEST';
 const SUBMIT_FAILURE = 'login/SUBMIT_FAILURE';
 const SUBMIT_SUCCESS = 'login/SUBMIT_SUCCESS';
 const CLEAN_ERROR_MESSAGE = 'login/CLEAN_ERROR_MESSAGE';
+const LOGOUT = 'login/LOGOUT';
 
 /*
 	reducer
@@ -55,6 +56,11 @@ export default (state=initialState, action) => {
 		case CLEAN_ERROR_MESSAGE:
 			return Object.assign({}, state, {
 				errorMessage: ''
+			})
+
+		case LOGOUT:
+			return Object.assign({}, state, {
+				isLoggedIn: false
 			})
 
 		default:
@@ -134,5 +140,10 @@ export const submit_success = (json) => ({
 
 export const clean_error_message = () => ({
 	type: CLEAN_ERROR_MESSAGE
+})
+
+
+export const logout = () => ({
+	type: LOGOUT
 })
 

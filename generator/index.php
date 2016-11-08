@@ -43,21 +43,32 @@
 			}, 
 			$CONFIG["redux_modules"])
 		),
+		"ROUTES_HELPERFUNCTIONS" => implode("\r\n", array_map(
+			function($f) {
+				$lines = array();
+				array_push($lines, "const " . $f["name"] . " = (" . implode(", ", $f["inputs"]) . ") => {");
+				array_push($lines, $f["body"]);
+				array_push($lines, "}");
+				return implode("\r\n", $lines);
+			},
+			$CONFIG["routes_helperfunctions"])
+		),
 		"ROUTES_TREE" => implode("\r\n", traverse_tree($CONFIG["routes"], 
 			// callback open
 			function($node){
 				$tabs = str_repeat("\t", ($node["level"]+3));
+				$onEnter = isset($node["onEnter"]) ? ' onEnter={'. $node["onEnter"] .'}' : '';
 				if(isset($node["children"])) {
 					// when has childrens, return open tag.
-					return $tabs . '<Route path="'. $node["path"] .'" component={'. $node["component_name"] .'}>';
+					return $tabs . '<Route path="'. $node["path"] .'" component={'. $node["component_name"] .'}'. $onEnter .' >';
 				} else {
 					// when has not children, return unary tag.
 					if(isset($node["IndexRoute"]) && $node["IndexRoute"] == "true") {
 						// ...in case of IndexRoute.
-						return $tabs . '<IndexRoute component={'. $node["component_name"] .'} />';
+						return $tabs . '<IndexRoute component={'. $node["component_name"] .'}'. $onEnter .' />';
 					} else {
 						// ...in case of another path.
-						return $tabs . '<Route path="'. $node["path"] .'" component={'. $node["component_name"] .'} />';
+						return $tabs . '<Route path="'. $node["path"] .'" component={'. $node["component_name"] .'}'. $onEnter .' />';
 					}
 				}
 			}, 

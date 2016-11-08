@@ -28,7 +28,7 @@ let store = createStore(combineReducers({
 	form: formReducer
 }), applyMiddleware(thunk, routerMiddleware(browserHistory)));
 
-store.subscribe(() =>	console.log(store.getState()));
+//store.subscribe(() =>	console.log(store.getState()));
 
 /*
 	history <> store sync
@@ -39,6 +39,8 @@ let history = syncHistoryWithStore(browserHistory, store);
 /*
 	App render
 */
+
+##ROUTES_HELPERFUNCTIONS##
 
 ReactDOM.render(
   <Provider store={store}>

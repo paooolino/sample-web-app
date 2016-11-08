@@ -31,7 +31,7 @@ let store = createStore(combineReducers({
 	form: formReducer
 }), applyMiddleware(thunk, routerMiddleware(browserHistory)));
 
-store.subscribe(() =>	console.log(store.getState()));
+//store.subscribe(() =>	console.log(store.getState()));
 
 /*
 	history <> store sync
@@ -43,13 +43,20 @@ let history = syncHistoryWithStore(browserHistory, store);
 	App render
 */
 
+const authCheck = (nextState, replace) => {
+if(!store.getState().login.isLoggedIn) {
+  replace("/login");
+}
+
+}
+
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
-			<Route path="/" component={MainLayout}>
+			<Route path="/" component={MainLayout} >
 				<IndexRoute component={HomePage} />
 				<Route path="/login" component={LoginPage} />
-				<Route path="/dashboard" component={DashboardPage} />
+				<Route path="/dashboard" component={DashboardPage} onEnter={authCheck} />
 			</Route>
     </Router>
   </Provider>,

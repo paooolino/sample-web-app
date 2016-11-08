@@ -19,6 +19,15 @@ routes:
     component_name: LoginPage
   - path: /dashboard
     component_name: DashboardPage
+    onEnter: authCheck
+
+routes_helperfunctions:
+- name: authCheck
+  inputs: [nextState, replace]
+  body: |
+    if(!store.getState().login.isLoggedIn) {
+      replace("/login");
+    }
 
 #
 # Forms section
@@ -93,6 +102,7 @@ components:
     <div className="Nav">
       <Link to="/">Home</Link>
       <Link to="/login">Login</Link>
+      <Link to="/dashboard">Dashboard</Link>
     </div>
   helper_components: []
   props: []
@@ -143,7 +153,11 @@ components:
 - name: LoginPage
   html: |
     <div className="LoginPage">
-      <LoginForm onSubmit={props.handleSubmit} />
+      {props.isLoggedIn ? 
+        <button onClick={props.handleLogout}>Logout</button>
+        :
+        <LoginForm onSubmit={props.handleSubmit} />
+      }
       {props.errorMessage!='' && <Popup close_handler={props.clean_error_message_handler} message={props.errorMessage} />}
     </div>
   redux_actions: [login]
@@ -157,6 +171,10 @@ components:
     type: string
     subreducer: login
           
+  - name: isLoggedIn
+    type: bool
+    subreducer: login
+    
   - name: handleSubmit
     type: func
     def: |
@@ -169,6 +187,13 @@ components:
     def: |
       (evt) => {
         dispatch(actions_login.clean_error_message());
+      }
+  
+  - name: handleLogout
+    type: func
+    def: |
+      (evt) => {
+        dispatch(actions_login.logout());
       }
   
 # 
@@ -240,6 +265,12 @@ redux_modules:
     effects:
     - key: errorMessage
       newValue: "''"
+      
+  - name: LOGOUT
+    inputs: []
+    effects:
+    - key: isLoggedIn
+      newValue: "false"
       
   async_actions:
   - name: submit

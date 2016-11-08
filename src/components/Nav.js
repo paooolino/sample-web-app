@@ -19,6 +19,7 @@ const Component = (props) => (
 <div className="Nav">
   <Link to="/">Home</Link>
   <Link to="/login">Login</Link>
+  <Link to="/dashboard">Dashboard</Link>
 </div>
 
 );

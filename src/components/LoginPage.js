@@ -20,7 +20,11 @@ import LoginForm from './LoginForm';
 
 const Component = (props) => (
 <div className="LoginPage">
-  <LoginForm onSubmit={props.handleSubmit} />
+  {props.isLoggedIn ? 
+    <button onClick={props.handleLogout}>Logout</button>
+    :
+    <LoginForm onSubmit={props.handleSubmit} />
+  }
   {props.errorMessage!='' && <Popup close_handler={props.clean_error_message_handler} message={props.errorMessage} />}
 </div>
 
@@ -40,8 +44,10 @@ const Component = (props) => (
 Component.propTypes = {
 	isSubmitting: PropTypes.bool.isRequired,
 	errorMessage: PropTypes.string.isRequired,
+	isLoggedIn: PropTypes.bool.isRequired,
 	handleSubmit: PropTypes.func.isRequired,
-	clean_error_message_handler: PropTypes.func.isRequired
+	clean_error_message_handler: PropTypes.func.isRequired,
+	handleLogout: PropTypes.func.isRequired
 }
 
 /*
@@ -56,6 +62,10 @@ const mapDispatchToProps = (dispatch) => ({
 	clean_error_message_handler: (evt) => {
   dispatch(actions_login.clean_error_message());
 }
+,
+	handleLogout: (evt) => {
+  dispatch(actions_login.logout());
+}
 	
 });
 
@@ -65,7 +75,8 @@ const mapDispatchToProps = (dispatch) => ({
 
 const mapStateToProps = (state) => ({
 	isSubmitting: state.login.isSubmitting,
-	errorMessage: state.login.errorMessage	
+	errorMessage: state.login.errorMessage,
+	isLoggedIn: state.login.isLoggedIn	
 });
 
 /*
