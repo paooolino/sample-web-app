@@ -44,10 +44,9 @@ let history = syncHistoryWithStore(browserHistory, store);
 */
 
 const authCheck = (nextState, replace) => {
-if(!store.getState().login.isLoggedIn) {
-  replace("/login");
-}
-
+	if(!store.getState().login.isLoggedIn) {
+		replace("/login");
+	}
 }
 
 ReactDOM.render(

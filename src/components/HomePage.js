@@ -4,6 +4,7 @@
 
 import React, {PropTypes} from 'react';
 import { Link } from 'react-router';
+import {VelocityComponent} from 'velocity-react';
 
 /*
 	internal imports
@@ -17,7 +18,7 @@ import { Link } from 'react-router';
 
 const Component = (props) => (
 <div className="HomePage">
-  HomePage
+  <h1>My Element...</h1>
 </div>
 
 );

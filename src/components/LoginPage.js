@@ -5,6 +5,7 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import { Link } from 'react-router';
+import {VelocityComponent} from 'velocity-react';
 
 /*
 	internal imports
@@ -25,7 +26,14 @@ const Component = (props) => (
     :
     <LoginForm onSubmit={props.handleSubmit} />
   }
-  {props.errorMessage!='' && <Popup close_handler={props.clean_error_message_handler} message={props.errorMessage} />}
+  {props.errorMessage!='' && 
+    <VelocityComponent animation={{ top:0 }} duration={500} runOnMount={true}>
+      <Popup
+        close_handler={props.clean_error_message_handler} 
+        message={props.errorMessage} 
+      />
+    </VelocityComponent>
+  }
 </div>
 
 );

@@ -26,7 +26,7 @@ const LOGOUT = 'login/LOGOUT';
 */
 
 const initialState = {
-	isSubmitting: false,
+		isSubmitting: false,
 	errorMessage: '',
 	loginResult: '',
 	isLoggedIn: false

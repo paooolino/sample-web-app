@@ -47,7 +47,7 @@
 			function($f) {
 				$lines = array();
 				array_push($lines, "const " . $f["name"] . " = (" . implode(", ", $f["inputs"]) . ") => {");
-				array_push($lines, $f["body"]);
+				array_push($lines, add_tabs_to_lines($f["body"], 1));
 				array_push($lines, "}");
 				return implode("\r\n", $lines);
 			},
@@ -333,4 +333,14 @@ function emptyDir($dirPath) {
 			unlink($file);
 		}
 	}
+}
+
+/*
+	add tabs to lines delimited by \r\n
+	no tabs for the first line 
+*/
+function add_tabs_to_lines($imploded_lines, $n_tabs) {
+	$tabs = str_repeat("\t", $n_tabs);
+	$html = $tabs . str_replace("\n", "\r\n" . $tabs, $imploded_lines);
+	return rtrim(str_replace("  ", "\t", $html));
 }

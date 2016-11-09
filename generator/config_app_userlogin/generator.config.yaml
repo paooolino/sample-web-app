@@ -113,7 +113,7 @@ components:
 - name: HomePage
   html: |
     <div className="HomePage">
-      HomePage
+      <h1>My Element...</h1>
     </div>
   helper_components: []
   props: []
@@ -126,7 +126,7 @@ components:
     <div className="Popup">
       <div className="Popup_inner">
         <div className="Popup_message">{props.message}</div>
-          <button onClick={props.close_handler}>OK</button>
+        <button onClick={props.close_handler}>OK</button>
       </div>
     </div>
   helper_components: []
@@ -158,7 +158,14 @@ components:
         :
         <LoginForm onSubmit={props.handleSubmit} />
       }
-      {props.errorMessage!='' && <Popup close_handler={props.clean_error_message_handler} message={props.errorMessage} />}
+      {props.errorMessage!='' && 
+        <VelocityComponent animation={{ top:0 }} duration={500} runOnMount={true}>
+          <Popup
+            close_handler={props.clean_error_message_handler} 
+            message={props.errorMessage} 
+          />
+        </VelocityComponent>
+      }
     </div>
   redux_actions: [login]
   helper_components: [Popup, LoginForm]

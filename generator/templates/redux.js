@@ -22,7 +22,7 @@ import { ENDPOINT_HOST, ENDPOINT_PATH } from '../../config';
 */
 
 const initialState = {
-##INITIAL_STATE##
+	##INITIAL_STATE##
 };
 
 export default (state=initialState, action) => {

@@ -12,7 +12,8 @@
     "react-router-redux": "^4.0.6",
     "redux": "^3.6.0",
     "redux-form": "^6.1.1",
-    "redux-thunk": "^2.1.0"
+    "redux-thunk": "^2.1.0",
+    "velocity-react": "^1.1.11"
   },
   "devDependencies": {
     "babel-core": "^6.17.0",

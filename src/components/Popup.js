@@ -4,6 +4,7 @@
 
 import React, {PropTypes} from 'react';
 import { Link } from 'react-router';
+import {VelocityComponent} from 'velocity-react';
 
 /*
 	internal imports
@@ -19,7 +20,7 @@ const Component = (props) => (
 <div className="Popup">
   <div className="Popup_inner">
     <div className="Popup_message">{props.message}</div>
-      <button onClick={props.close_handler}>OK</button>
+    <button onClick={props.close_handler}>OK</button>
   </div>
 </div>
 
