@@ -18,7 +18,7 @@ import {VelocityComponent} from 'velocity-react';
 
 const Component = (props) => (
 <div className="HomePage">
-  <h1>My Element...</h1>
+  HomePage
 </div>
 
 );

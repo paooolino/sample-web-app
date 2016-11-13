@@ -44,7 +44,7 @@ let history = syncHistoryWithStore(browserHistory, store);
 */
 
 const authCheck = (nextState, replace) => {
-	if(!store.getState().login.isLoggedIn) {
+if(!store.getState().login.isLoggedIn) {
 		replace("/login");
 	}
 }

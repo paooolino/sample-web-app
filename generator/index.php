@@ -23,6 +23,9 @@
 	// empty folder
 	emptyDir($OUTPUT_ROOT);
 	
+	// utils
+	createFile("utils/", "renderField.js", file_get_contents("templates/utils.renderFields.js"), array());
+	
 	// index.js
 	createFile("", "index.js", file_get_contents("templates/index.js"), array(
 		"LAYOUT_IMPORTS" => implode("\r\n", traverse_tree($CONFIG["routes"],
@@ -128,7 +131,23 @@
 	// form components
 	foreach($CONFIG["forms"] as $c) {
 		createFile("components/", $c["name"] . ".js", file_get_contents("templates/form_component.js"), array(
-			"COMPONENT_HTML" => $c["html"]
+			"COMPONENT_HTML" => $c["html"],
+			"VALIDATORS" => add_tabs_to_lines(implode("\r\n", array_map(
+				function($v){
+					return implode("\r\n", array_map(
+						function($constraint) use($v) {
+							return populate_template(
+								file_get_contents("templates/constraint_". $constraint .".js"), array(
+									"FIELD" => $v["field"],
+									"ERROR_MESSAGE" => $v["error_message"]
+								)
+							);
+						}, 
+						$v["constraints"]
+					));
+				},
+				$c["validators"]
+			)), 1)
 		));
 	}
 	
@@ -149,29 +168,29 @@
 					}, 
 					$c["helper_components"])
 				),
-				"COMPONENT_HTML" => $c["html"],
-				"PROPTYPES" => implode(",\r\n", array_map(
+				"COMPONENT_HTML" => add_tabs_to_lines($c["html"], 1),
+				"PROPTYPES" => add_tabs_to_lines(implode(",\r\n", array_map(
 					function($p){
-						return "\t" . $p["name"] . ": PropTypes." . $p["type"] . ".isRequired";
+						return $p["name"] . ": PropTypes." . $p["type"] . ".isRequired";
 					},
 					$c["props"])
-				),
-				"DISPATCH_TO_PROPS" => implode(",\r\n", array_map(
+				), 1),
+				"DISPATCH_TO_PROPS" => add_tabs_to_lines(implode(",\r\n", array_map(
 					function($p){
-						return "\t" . $p["name"] . ": " . $p["def"];
+						return $p["name"] . ": " . rtrim($p["def"]);
 					},
 					array_filter($c["props"], function($p){
 						if($p["type"] == "func") return true;
 					}))
-				),
-				"STATE_TO_PROPS" => implode(",\r\n", array_map(
+				), 1),
+				"STATE_TO_PROPS" => add_tabs_to_lines(implode(",\r\n", array_map(
 					function($p){
-						return "\t" . $p["name"] . ": state" . ($p["subreducer"] == "" ? "" : "." . $p["subreducer"]) . "." . $p["name"];
+						return $p["name"] . ": state" . ($p["subreducer"] == "" ? "" : "." . $p["subreducer"]) . "." . $p["name"];
 					},
 					array_filter($c["props"], function($p){
 						if($p["type"] != "func") return true;
 					}))
-				)
+				), 1)
 			));
 	}
 	
@@ -337,10 +356,23 @@ function emptyDir($dirPath) {
 
 /*
 	add tabs to lines delimited by \r\n
-	no tabs for the first line 
+	no tabs for the first line
 */
 function add_tabs_to_lines($imploded_lines, $n_tabs) {
+	// calculate tabs to append
 	$tabs = str_repeat("\t", $n_tabs);
-	$html = $tabs . str_replace("\n", "\r\n" . $tabs, $imploded_lines);
+	
+	// transforms isolated \n in \r\n
+	$imploded_lines = str_replace("\n", "\r\n", $imploded_lines);
+	$imploded_lines = str_replace("\r\r\n", "\r\n", $imploded_lines);
+
+	// transforms isolated \r in \r\n
+	$imploded_lines = str_replace("\r", "\r\n", $imploded_lines);
+	$imploded_lines = str_replace("\r\n\n", "\r\n", $imploded_lines);
+	
+	// set tabs after each carriage return
+	$html = str_replace("\r\n", "\r\n" . $tabs, $imploded_lines);
+	
+	// return the html without last carriage return
 	return rtrim(str_replace("  ", "\t", $html));
 }

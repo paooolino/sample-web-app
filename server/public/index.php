@@ -1,4 +1,5 @@
 <?php
+sleep(1);
 header("Access-Control-Allow-Origin: *");
 
 require __DIR__ . '/../src/config.php';

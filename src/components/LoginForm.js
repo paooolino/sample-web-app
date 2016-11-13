@@ -10,6 +10,8 @@ import { Field, reduxForm } from 'redux-form';
 	internal imports
 */
 
+import renderField from '../utils/renderField';
+
 /*
 	stateless component
 */
@@ -21,7 +23,7 @@ const Component = (props) => (
       Username
     </div>
     <div className="formField">
-      <Field name="usr" component="input" type="text" />
+      <Field name="usr" component={renderField} type="text" />
     </div>
   </div>
   <div className="formRow">
@@ -29,20 +31,42 @@ const Component = (props) => (
       Password
     </div>
     <div className="formField">
-      <Field name="pwd" component="input" type="password" />
+      <Field name="pwd" component={renderField} type="password" />
     </div>
   </div>
   <div className="formRow">
-    <button disabled={props.pristine || props.submitting}>Login</button>
+    {props.submitting ?
+      <span>submitting...</span>
+    :
+      <button type="submit">Login</button>
+    }
   </div>
 </form>
 
 );
 
 /*
+	validation function
+*/
+
+const validate = values => {
+	const errors = {};
+	
+	if (!values.usr) {
+		errors.usr = 'Compilare questo campo.';
+	}
+	if (!values.pwd) {
+		errors.pwd = 'Compilare questo campo.';
+	}
+	
+	return errors;
+}
+
+/*
 	decorate & export
 */
 
 export default reduxForm({
-  form: 'login' // a unique name for this form
+  form: 'login', 	// a unique name for this form
+	validate				// <--- validation function given to redux-form
 })(Component);

@@ -19,7 +19,7 @@ import {VelocityComponent} from 'velocity-react';
 */
 
 const Component = (props) => (
-##COMPONENT_HTML##
+	##COMPONENT_HTML##
 );
 
 /*
@@ -34,7 +34,7 @@ const Component = (props) => (
 */
 
 Component.propTypes = {
-##PROPTYPES##
+	##PROPTYPES##
 }
 
 /*
@@ -42,7 +42,7 @@ Component.propTypes = {
 */
 
 const mapDispatchToProps = (dispatch) => ({
-##DISPATCH_TO_PROPS##	
+	##DISPATCH_TO_PROPS##	
 });
 
 /*
@@ -50,7 +50,7 @@ const mapDispatchToProps = (dispatch) => ({
 */
 
 const mapStateToProps = (state) => ({
-##STATE_TO_PROPS##	
+	##STATE_TO_PROPS##	
 });
 
 /*

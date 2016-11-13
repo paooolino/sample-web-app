@@ -20,22 +20,19 @@ import LoginForm from './LoginForm';
 */
 
 const Component = (props) => (
-<div className="LoginPage">
-  {props.isLoggedIn ? 
-    <button onClick={props.handleLogout}>Logout</button>
-    :
-    <LoginForm onSubmit={props.handleSubmit} />
-  }
-  {props.errorMessage!='' && 
-    <VelocityComponent animation={{ top:0 }} duration={500} runOnMount={true}>
-      <Popup
-        close_handler={props.clean_error_message_handler} 
-        message={props.errorMessage} 
-      />
-    </VelocityComponent>
-  }
-</div>
-
+	<div className="LoginPage">
+		{props.isLoggedIn ? 
+			<button onClick={props.handleLogout}>Logout</button>
+			:
+			<LoginForm onSubmit={props.handleSubmit} />
+		}
+		{props.errorMessage!='' && 
+			<Popup
+				close_handler={props.clean_error_message_handler} 
+				message={props.errorMessage} 
+			/>
+		}
+	</div>
 );
 
 /*
@@ -50,7 +47,6 @@ const Component = (props) => (
 */
 
 Component.propTypes = {
-	isSubmitting: PropTypes.bool.isRequired,
 	errorMessage: PropTypes.string.isRequired,
 	isLoggedIn: PropTypes.bool.isRequired,
 	handleSubmit: PropTypes.func.isRequired,
@@ -64,17 +60,14 @@ Component.propTypes = {
 
 const mapDispatchToProps = (dispatch) => ({
 	handleSubmit: (data) => {
-  dispatch(actions_login.submit(data.usr, data.pwd));
-}
-,
+		return dispatch(actions_login.submit(data.usr, data.pwd));
+	},
 	clean_error_message_handler: (evt) => {
-  dispatch(actions_login.clean_error_message());
-}
-,
+		dispatch(actions_login.clean_error_message());
+	},
 	handleLogout: (evt) => {
-  dispatch(actions_login.logout());
-}
-	
+		dispatch(actions_login.logout());
+	}	
 });
 
 /*
@@ -82,7 +75,6 @@ const mapDispatchToProps = (dispatch) => ({
 */
 
 const mapStateToProps = (state) => ({
-	isSubmitting: state.login.isSubmitting,
 	errorMessage: state.login.errorMessage,
 	isLoggedIn: state.login.isLoggedIn	
 });

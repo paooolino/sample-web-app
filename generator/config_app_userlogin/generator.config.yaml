@@ -5,9 +5,14 @@
 # Routes may be nested.
 # 
 # component_name: the name of the layout component.
-# path: the url path.
+# path: the url path. Do not define if IndexRoute is used.
 # children: (optional) a list of nested layout components.
 # IndexRoute: (optional) if set to true identifies the home route.
+#   When specified, path mustn't be defined.
+# onEnter: the name of the helper function to execute when entering the route.
+#   the inputs are [nextState, replace]
+#   you may use store.getState() to get the current state
+#   you may use replace("/new-route") to redirect
 #
 routes:
 - path: /
@@ -21,6 +26,12 @@ routes:
     component_name: DashboardPage
     onEnter: authCheck
 
+# define helper functions for router.
+#
+# name: the function name.
+# inputs: the input parameters.
+# body: the body of the function.
+#
 routes_helperfunctions:
 - name: authCheck
   inputs: [nextState, replace]
@@ -36,6 +47,17 @@ routes_helperfunctions:
 #
 # name: the name of the form component.
 # html: the html/jsx code to render the component.
+#   You may use <Field> component.
+#   You may use <Field component={renderField}, this is for the validation error message.
+#   props.submitting is automatically defined.
+#   props.handleSubmit should be defined in the container component.
+#     it automatically takes form data as parameter.
+# validators: a list of validation details
+#   - field: the field name, corresponding to a field name defined in the html.
+#   - error_message: the error message.
+#   - contraints: a list of constraints. Possible values:
+#     required
+#     ...
 #
 forms:
 - name: LoginForm
@@ -46,7 +68,7 @@ forms:
           Username
         </div>
         <div className="formField">
-          <Field name="usr" component="input" type="text" />
+          <Field name="usr" component={renderField} type="text" />
         </div>
       </div>
       <div className="formRow">
@@ -54,13 +76,25 @@ forms:
           Password
         </div>
         <div className="formField">
-          <Field name="pwd" component="input" type="password" />
+          <Field name="pwd" component={renderField} type="password" />
         </div>
       </div>
       <div className="formRow">
-        <button disabled={props.pristine || props.submitting}>Login</button>
+        {props.submitting ?
+          <span>submitting...</span>
+        :
+          <button type="submit">Login</button>
+        }
       </div>
     </form>
+  validators:
+  - field: usr
+    error_message: Compilare questo campo.
+    constraints: [required]
+    
+  - field: pwd
+    error_message: Compilare questo campo.
+    constraints: [required]
     
 # 
 # Components section
@@ -113,7 +147,7 @@ components:
 - name: HomePage
   html: |
     <div className="HomePage">
-      <h1>My Element...</h1>
+      HomePage
     </div>
   helper_components: []
   props: []
@@ -159,21 +193,15 @@ components:
         <LoginForm onSubmit={props.handleSubmit} />
       }
       {props.errorMessage!='' && 
-        <VelocityComponent animation={{ top:0 }} duration={500} runOnMount={true}>
-          <Popup
-            close_handler={props.clean_error_message_handler} 
-            message={props.errorMessage} 
-          />
-        </VelocityComponent>
+        <Popup
+          close_handler={props.clean_error_message_handler} 
+          message={props.errorMessage} 
+        />
       }
     </div>
   redux_actions: [login]
   helper_components: [Popup, LoginForm]
   props:
-  - name: isSubmitting
-    type: bool
-    subreducer: login
-    
   - name: errorMessage
     type: string
     subreducer: login
@@ -186,7 +214,7 @@ components:
     type: func
     def: |
       (data) => {
-        dispatch(actions_login.submit(data.usr, data.pwd));
+        return dispatch(actions_login.submit(data.usr, data.pwd));
       }
       
   - name: clean_error_message_handler
@@ -231,8 +259,6 @@ redux_modules:
 - name: login
 
   initialState:
-  - name: isSubmitting
-    jsvalue: "false"
   - name: errorMessage
     jsvalue: "''"
   - name: loginResult
@@ -243,25 +269,19 @@ redux_modules:
   actions:      
   - name: SUBMIT_REQUEST
     inputs: []
-    effects:
-    - key: isSubmitting
-      newValue: "true"
+    effects: []
       
   - name: SUBMIT_FAILURE
     inputs: [err]
     effects:
     - key: errorMessage
       newValue: action.err
-    - key: isSubmitting
-      newValue: "false"
       
   - name: SUBMIT_SUCCESS
     inputs: [json]
     effects:
     - key: loginResult
       newValue: action.json
-    - key: isSubmitting
-      newValue: "false"
     - key: errorMessage
       newValue: "''"
     - key: isLoggedIn

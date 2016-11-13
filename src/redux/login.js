@@ -26,8 +26,7 @@ const LOGOUT = 'login/LOGOUT';
 */
 
 const initialState = {
-		isSubmitting: false,
-	errorMessage: '',
+		errorMessage: '',
 	loginResult: '',
 	isLoggedIn: false
 };
@@ -36,19 +35,17 @@ export default (state=initialState, action) => {
 	switch(action.type) {
 		case SUBMIT_REQUEST:
 			return Object.assign({}, state, {
-				isSubmitting: true
+
 			})
 
 		case SUBMIT_FAILURE:
 			return Object.assign({}, state, {
-				errorMessage: action.err,
-				isSubmitting: false
+				errorMessage: action.err
 			})
 
 		case SUBMIT_SUCCESS:
 			return Object.assign({}, state, {
 				loginResult: action.json,
-				isSubmitting: false,
 				errorMessage: '',
 				isLoggedIn: true
 			})
@@ -89,7 +86,7 @@ export const submit = (usr, pwd) => {
     // now that the Store has been notified of the new todo item, we 
     // should also notify our server - we'll use here ES6 fetch function 
     // to post the data
-    fetch(ENDPOINT_HOST + ENDPOINT_PATH, {
+    return fetch(ENDPOINT_HOST + ENDPOINT_PATH, {
       method: 'post',
       body: JSON.stringify({
         usr, pwd
@@ -109,10 +106,6 @@ export const submit = (usr, pwd) => {
 			//  showing a "out of sync" message, etc.
 			dispatch(submit_failure(err.message));
     });
-		
-		// what you return here gets returned by the dispatch function that used   
-		// this action creator
-		return null; 
   }
 }
 

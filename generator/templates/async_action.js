@@ -15,7 +15,7 @@ export const ##ACTION_NAME## = (##ASYNC_INPUTS##) => {
     // now that the Store has been notified of the new todo item, we 
     // should also notify our server - we'll use here ES6 fetch function 
     // to post the data
-    fetch(ENDPOINT_HOST + ENDPOINT_PATH, {
+    return fetch(ENDPOINT_HOST + ENDPOINT_PATH, {
       method: 'post',
       body: JSON.stringify({
         ##ASYNC_INPUTS##
@@ -34,9 +34,5 @@ export const ##ACTION_NAME## = (##ASYNC_INPUTS##) => {
 			//  showing a "out of sync" message, etc.
 			dispatch(##FAILURE_ACTION_NAME##(err.message));
     });
-		
-		// what you return here gets returned by the dispatch function that used   
-		// this action creator
-		return null; 
   }
 }
