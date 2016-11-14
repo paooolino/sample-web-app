@@ -147,10 +147,27 @@ components:
       }
     
 - name: DashboardPage
-  helper_components: []
+  helper_components: [Tree]
+  redux_actions: [tree]
   html: |
     <div>
       <h1>Dashboard</h1>
+      <Tree data={props.urlTreeData} />
+    </div>
+  props:
+  - name: urlTreeData
+    type: array
+    subreducer: tree
+  
+- name: Tree
+  helper_components: []
+  html: |
+    <div>
+      <div>Tree</div>
+      <div>{(() => {
+        console.log(props.data);
+        return <div>ohoh</div>
+      })()}</div>
     </div>
   props: []
   
@@ -191,3 +208,9 @@ redux_modules:
       newValue: "true"
   async_actions: []
     
+- name: tree
+  initialState:
+  - name: urlTreeData
+    jsvalue: "[{title: 'main', subtitle: 'sub'}, { title: 'value2', expanded: true, children: [{ title: 'value3' }] }]"
+  actions: []
+  async_actions: []

@@ -20,6 +20,7 @@ import HomePage from './components/HomePage';
 import LoginPage from './components/LoginPage';
 import DashboardPage from './components/DashboardPage';
 import loginReducer from './redux/login';
+import treeReducer from './redux/tree';
 
 /*
 	store creation
@@ -27,6 +28,7 @@ import loginReducer from './redux/login';
 
 let store = createStore(combineReducers({
 	login: loginReducer,
+tree: treeReducer,
   routing: routerReducer,
 	form: formReducer
 }), applyMiddleware(thunk, routerMiddleware(browserHistory)));
