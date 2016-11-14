@@ -17,11 +17,18 @@ import {VelocityComponent} from 'velocity-react';
 */
 
 const Component = (props) => (
-<div className="Popup">
-  <div className="Popup_inner">
-    <div className="Popup_message">{props.message}</div>
-    <button onClick={props.close_handler}>OK</button>
+<div>
+  <header>
+    CMS App.
+  </header>
+  <div className="content">
+    {props.children}
   </div>
+  <footer>
+    <div>
+      Copyright (c) 2016
+    </div>
+  </footer>
 </div>
 
 );
@@ -38,8 +45,7 @@ const Component = (props) => (
 */
 
 Component.propTypes = {
-	message: PropTypes.string.isRequired,
-	close_handler: PropTypes.func.isRequired
+
 }
 
 export default Component;

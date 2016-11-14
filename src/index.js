@@ -15,7 +15,7 @@ import { reducer as formReducer } from 'redux-form';
 	internal imports
 */
 
-import MainLayout from './components/MainLayout';
+import Layout from './components/Layout';
 import HomePage from './components/HomePage';
 import LoginPage from './components/LoginPage';
 import DashboardPage from './components/DashboardPage';
@@ -43,19 +43,19 @@ let history = syncHistoryWithStore(browserHistory, store);
 	App render
 */
 
-const authCheck = (nextState, replace) => {
+const checkLogin = (nextState, replace) => {
 if(!store.getState().login.isLoggedIn) {
-		replace("/login");
+		replace('/login');
 	}
 }
 
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
-			<Route path="/" component={MainLayout} >
+			<Route path="/" component={Layout} >
 				<IndexRoute component={HomePage} />
 				<Route path="/login" component={LoginPage} />
-				<Route path="/dashboard" component={DashboardPage} onEnter={authCheck} />
+				<Route path="/dashboard" component={DashboardPage} onEnter={checkLogin} />
 			</Route>
     </Router>
   </Provider>,

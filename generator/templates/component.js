@@ -5,7 +5,7 @@
 import React, {PropTypes} from 'react';
 import {connect} from 'react-redux';
 import { Link } from 'react-router';
-import {VelocityComponent} from 'velocity-react';
+import { push } from 'react-router-redux';
 
 /*
 	internal imports

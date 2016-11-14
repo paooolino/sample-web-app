@@ -1,0 +1,193 @@
+#
+# CMS app config
+#
+
+# 
+# Routes section
+#
+# Bind each route to one component.
+# Routes may be nested.
+# 
+# component_name: the name of the layout component.
+# path: the url path. Do not define if IndexRoute is used.
+# children: (optional) a list of nested layout components.
+# IndexRoute: (optional) if set to true identifies the home route.
+#   When specified, path mustn't be defined.
+# onEnter: (optional) the name of the helper function to execute when entering the route.
+#   the inputs are [nextState, replace]
+#   you may use store.getState() to get the current state
+#   you may use replace("/new-route") to redirect
+#
+routes:
+- component_name: Layout
+  path: /
+  children:
+  - component_name: HomePage
+    IndexRoute: true
+  - component_name: LoginPage
+    path: /login
+  - component_name: DashboardPage
+    path: /dashboard
+    onEnter: checkLogin
+
+# define helper functions for router.
+#
+# name: the function name.
+# inputs: the input parameters.
+# body: the body of the function.
+#   is possible to access the store through store.getState()
+#   and then .appending redux modules name defined below (i.e. store.getState().login.isLoggedIn)
+#
+routes_helperfunctions:
+- name: checkLogin
+  inputs: [nextState, replace]
+  body: |
+    if(!store.getState().login.isLoggedIn) {
+      replace('/login');
+    }
+    
+#
+# Forms section
+#
+# These are special components decorated using the redux-form library.
+#
+# name: the name of the form component.
+# html: the html/jsx code to render the component.
+#   You may use <Field> component.
+#   You may use <Field component={renderField}, this is for the validation error message.
+#   props.submitting is automatically defined.
+#   props.handleSubmit should be defined in the container component.
+#     it automatically takes form data as parameter.
+# validators: a list of validation details
+#   - field: the field name, corresponding to a field name defined in the html.
+#   - error_message: the error message.
+#   - contraints: a list of constraints. Possible values:
+#     required
+#     ...
+#
+forms:
+- name: LoginForm
+  html: |
+    <div>
+      <form onSubmit={props.handleSubmit}>
+        <button>Login</button>
+      </form>
+    </div>
+  validators: []
+    
+# 
+# Components section
+#
+# These are the application components.
+# 
+# name: the name of the component.
+# html: the html/jsx code to render the component.
+#   use {props.children} to render children.
+# redux_actions: a list of redux modules from which import actions.
+#   IMPORTANT: if not set, turn the component into STATELESS.
+# helper_components: a list of other components used by this component.
+# props: a list of properties used by this component.
+#   name: the prop name.
+#   subreducer: the redux component name to which the prop belongs. 
+#     NOT NEEDED FOR STATELESS.
+#     NOT NEEDED FOR type = func
+#   type: the prop type (func|string)
+#   def: if type is "func", is mandatory to define here the function.
+#        action creators should be referenced as "actions_<subreducer>."
+#        example:
+#         (evt) => {
+#           dispatch(actions_login.logout());
+#           dispatch(push('/login'));
+#         }
+#     NOT NEEDED FOR STATELESS.
+#
+components:
+
+- name: Layout
+  helper_components: []
+  html: |
+    <div>
+      <header>
+        CMS App.
+      </header>
+      <div className="content">
+        {props.children}
+      </div>
+      <footer>
+        <div>
+          Copyright (c) 2016
+        </div>
+      </footer>
+    </div>
+  props: []
+    
+- name: HomePage
+  helper_components: []
+  html: |
+    <div>
+      <h1>Home</h1>
+    </div>
+  props: []
+    
+- name: LoginPage
+  helper_components: [LoginForm]
+  html: |
+    <div>
+      <h1>Login</h1>
+      <LoginForm onSubmit={props.handleSubmit} />
+    </div>
+  redux_actions: [login]
+  props:
+  - name: handleSubmit
+    type: func
+    def: |
+      (evt) => {
+        dispatch(actions_login.login());
+        dispatch(push('/dashboard'));
+      }
+    
+- name: DashboardPage
+  helper_components: []
+  html: |
+    <div>
+      <h1>Dashboard</h1>
+    </div>
+  props: []
+  
+# 
+# Redux Modules section
+#
+# define actions and reducers.
+# 
+# name: the name of the module.
+# initialState: a list of elements defining the initial shape of the state.
+#   name: the name of the property.
+#   jsvalue: the value of the property.
+# actions: a list of sync actions used by the module.
+#   name: the name of the sync action (uppercase).
+#   inputs: a list of properties to pass as inputs to the action creator.
+#           example: [name, value]
+#           these names will be referenced in effects as "action.<name>".
+#   effects: a list of key>newValue properties to set when the action is dispatched.
+#            references to input names must be prefixed with "action.".
+#            a key may be dynamic. Surround it with double quotes and brackets
+#            example: "[action.name]"
+# async_actions: a list of async actions defined by the module.
+#   name: the name of the async action (lowercase).
+#   inputs: a list of properties to pass as inputs to the action creator.
+#         the same variables will be passed to the server.
+#   request_action: the name of the action to dispatch when requesting.
+#
+redux_modules: 
+- name: login
+  initialState:
+  - name: isLoggedIn
+    jsvalue: "false"
+  actions:
+  - name: LOGIN
+    inputs: []
+    effects:
+    - key: isLoggedIn
+      newValue: "true"
+  async_actions: []
+    

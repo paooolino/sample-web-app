@@ -7,7 +7,7 @@
 	*/
 	
 	$OUTPUT_ROOT = "../src/";
-	$CONFIG_ROOT = "config_app_userlogin/";
+	$CONFIG_ROOT = "config_app_cms/";
 	
 	/*
 		configuration end
