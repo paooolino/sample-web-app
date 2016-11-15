@@ -101,6 +101,36 @@ forms:
 #         }
 #     NOT NEEDED FOR STATELESS.
 #
+#
+# Stateless component
+#
+# - name: <component name>
+#   helper_components: ['<helper component1>', '<helper component2>']
+#   html: |
+#     <div>{props.children}</div>
+#   props:
+#   - name: <prop name (also functions)>
+#     type: <prop type>
+#
+# Connected component
+#
+# - name: <component name>
+#   redux_actions: ['<redux module 1>', '<redux module 2>']
+#   helper_components: ['<helper component1>', '<helper component2>']
+#   html: |
+#     <div>{props.children}</div>
+#   props:
+#   - name: <prop name (not function)>
+#     type: <prop type>
+#     subreducer: <redux module>
+#   - name: <prop name (function)>
+#     type: func
+#     def: |
+#       (evt) => {
+#         dispatch(actions_login.logout());
+#         dispatch(push('/login'));
+#       }
+#     
 components:
 
 - name: Layout
@@ -160,14 +190,22 @@ components:
     subreducer: tree
   
 - name: Tree
-  helper_components: []
+  helper_components: [TreeItem]
   html: |
     <div>
       <div>Tree</div>
-      <div>{(() => {
-        console.log(props.data);
-        return <div>ohoh</div>
-      })()}</div>
+      <TreeItem level="1" data={props.data[0]} />
+    </div>
+  props: []
+  
+- name: TreeItem
+  helper_components: [TreeItem]
+  html: |
+    <div>
+      <div className={"treeitem level_" + props.level}>
+        {props.data.title}
+        {props.data.children && props.data.children.map((d) => <TreeItem level={parseInt(props.level) + 1} key={d.id} data={d} />)}
+      </div>
     </div>
   props: []
   
@@ -211,6 +249,29 @@ redux_modules:
 - name: tree
   initialState:
   - name: urlTreeData
-    jsvalue: "[{title: 'main', subtitle: 'sub'}, { title: 'value2', expanded: true, children: [{ title: 'value3' }] }]"
+    jsvalue: "[
+      {
+        id: 1,
+        title: 'Home',
+        slug: '',
+        children: [{
+          id: 2,
+          title: 'Info',
+          slug: 'info'
+        }, {
+          id: 3,
+          title: 'Products',
+          slug: 'products'
+        }, {
+          id: 4,
+          title: 'News',
+          slug: 'news'
+        }, {
+          id: 5,
+          title: 'Contacts',
+          slug: 'contacts'
+        }]
+      }
+    ]"
   actions: []
   async_actions: []

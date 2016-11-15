@@ -18,8 +18,10 @@ import TreeItem from './TreeItem';
 
 const Component = (props) => (
 <div>
-  <div>Tree</div>
-  <TreeItem level="1" data={props.data[0]} />
+  <div className={"treeitem level_" + props.level}>
+    {props.data.title}
+    {props.data.children && props.data.children.map((d) => <TreeItem level={parseInt(props.level) + 1} key={d.id} data={d} />)}
+  </div>
 </div>
 
 );

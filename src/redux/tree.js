@@ -22,7 +22,7 @@ import { ENDPOINT_HOST, ENDPOINT_PATH } from '../../config';
 */
 
 const initialState = {
-		urlTreeData: [{title: 'main', subtitle: 'sub'}, { title: 'value2', expanded: true, children: [{ title: 'value3' }] }]
+		urlTreeData: [ { id: 1, title: 'Home', slug: '', children: [{ id: 2, title: 'Info', slug: 'info' }, { id: 3, title: 'Products', slug: 'products' }, { id: 4, title: 'News', slug: 'news' }, { id: 5, title: 'Contacts', slug: 'contacts' }] } ]
 };
 
 export default (state=initialState, action) => {
