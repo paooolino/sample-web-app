@@ -25,9 +25,13 @@ class MyComponent extends Component {
 		super(props);
 	}
 	
-	##COMPONENT_WILL_MOUNT##
+	componentWillMount() {
+		##COMPONENT_WILL_MOUNT##
+	}
 	
-	##COMPONENT_WILL_RECEIVE_PROPS##
+	componentWillReceiveProps(nextProps) {
+		##COMPONENT_WILL_RECEIVE_PROPS##
+	}
 	
 	render() {
 		return (
