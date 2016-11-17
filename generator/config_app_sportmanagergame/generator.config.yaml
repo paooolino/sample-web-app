@@ -139,6 +139,8 @@ forms: []
 #           dispatch(push('/login'));
 #         }
 #     NOT NEEDED FOR STATELESS.
+# willmount: (optional) text block
+# receiveprops: (optional) text block
 #
 # You may use <Link to="/">Home</Link> as Link is available by default.
 #
@@ -170,7 +172,7 @@ forms: []
 #         dispatch(actions_login.logout());
 #         dispatch(push('/login'));
 #       }
-#     
+#
 components:
 
 - name: Layout
@@ -285,7 +287,7 @@ components:
   props: []
   
 - name: SeasonPage
-  redux_actions: []
+  redux_actions: [season]
   helper_components: []
   html: |
     <div>
@@ -295,10 +297,18 @@ components:
         <div>Current season: {this.props.currentSeason}</div>
       </div>
     </div>
+  willmount: |
+    this.props.fetch_season();
   props:
   - name: currentSeason
     subreducer: season
     type: number
+  - name: fetch_season
+    type: func
+    def: |
+      () => {
+        dispatch(actions_season.fetch_season());
+      }
   
 - name: TeamPage
   helper_components: []
@@ -417,5 +427,23 @@ redux_modules:
 - name: season
   initialState: |
     currentSeason: 0
-  actions: []
-  async_actions: []
+  actions:
+  - name: FETCH_REQUEST
+    inputs: []
+    effects: []
+  - name: FETCH_FAILURE
+    inputs: []
+    effects: []
+  - name: FETCH_SUCCESS
+    inputs: []
+    effects:
+    - key: currentSeason
+      newValue: 1
+  
+  async_actions:
+  - name: fetch_season
+    inputs: []
+    request_action_name: FETCH_REQUEST
+    failure_action_name: FETCH_FAILURE
+    success_action_name: FETCH_SUCCESS
+    onSuccess:

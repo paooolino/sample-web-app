@@ -15,11 +15,11 @@ export const ##ACTION_NAME## = (##ASYNC_INPUTS##) => {
     // now that the Store has been notified of the new todo item, we 
     // should also notify our server - we'll use here ES6 fetch function 
     // to post the data
+		const body_request = {##ASYNC_INPUTS##};
+		body_request.action = ##REQUEST_ACTION_NAME_UPPERCASE##;
     return fetch(ENDPOINT_HOST + ENDPOINT_PATH, {
       method: 'post',
-      body: JSON.stringify({
-        ##ASYNC_INPUTS##
-      })
+      body: JSON.stringify(body_request)
     }).then(response => {
       // you should probably get a real id for your new todo item here, 
       // and update your store, but we'll leave that to you

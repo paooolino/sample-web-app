@@ -196,8 +196,8 @@
 					}))
 				), 1),
 				"COMPONENT_HELPERFUNCTIONS" => "",
-				"COMPONENT_WILL_MOUNT" => "",
-				"COMPONENT_WILL_RECEIVE_PROPS" => ""
+				"COMPONENT_WILL_MOUNT" => isset($c["willmount"]) ? $c["willmount"] : "",
+				"COMPONENT_WILL_RECEIVE_PROPS" => isset($c["receiveprops"]) ? $c["receiveprops"] : ""
 			));
 	}
 	
@@ -233,36 +233,12 @@
 					$html = populate_template(file_get_contents("templates/async_action.js"), array(
 						"ACTION_NAME" => $a["name"],
 						"ASYNC_INPUTS" => implode(", ", $a["inputs"]),
+						"REQUEST_ACTION_NAME_UPPERCASE" => $a["request_action_name"],
 						"REQUEST_ACTION_NAME" => strtolower($a["request_action_name"]),
 						"FAILURE_ACTION_NAME" => strtolower($a["failure_action_name"]),
 						"SUCCESS_ACTION_NAME" => strtolower($a["success_action_name"]),
 						"ON_SUCCESS" => $a["onSuccess"]
 					));
-					/*
-					$html .= "export const ". $a["name"] ." = (". implode(", ", $a["inputs"]) .") => (dispatch) => {\r\n";
-					$html .= "\t" . "dispatch(". strtolower($a["request_action"]) ."());\r\n";
-					$html .= "\t" . "return fetch(ENDPOINT_HOST + ENDPOINT_PATH, {\r\n";
-					$html .= "\t\t" . "method: 'POST',\r\n";
-					$html .= "\t\t" . "headers: {\r\n";
-					$html .= "\t\t\t" . "'Accept': 'application/json',\r\n";
-					$html .= "\t\t\t" . "'Content-Type': 'application/json'\r\n";
-					$html .= "\t\t" . "},\r\n";
-					$html .= "\t\t" . "body: JSON.stringify({\r\n";
-					$html .= implode(",\r\n", array_map(function($d){ return "\t\t\t" . $d; }, $a["inputs"])) . "\r\n";
-					$html .= "\t\t" . "})\r\n";
-					$html .= "\t" . "})\r\n";
-					$html .= "\t\t" . ".then(response => {" . "\r\n";
-					$html .= "\t\t\t" . "if(!response.ok) {" . "\r\n";
-					$html .= "\t\t\t\t" . "dispatch(request_failure(response.status + ' - ' + response.statusText))" . "\r\n";
-					$html .= "\t\t\t" . "} else {" . "\r\n";
-					$html .= "\t\t\t\t" . "// request_success" . "\r\n";
-					$html .= "\t\t\t" . "}" . "\r\n";
-					$html .= "\t\t" . "})" . "\r\n";
-					$html .= "\t\t" . ".catch(err => {" . "\r\n";
-					$html .= "\t\t\t" . "dispatch(request_failure(err.message))" . "\r\n";
-					$html .= "\t\t" . "});" . "\r\n";
-					$html .= "}". "\r\n";
-					*/
 					return $html;
 				},
 				$redux["async_actions"]
