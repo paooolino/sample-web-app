@@ -2,8 +2,8 @@
 	external imports
 */
 
-import React, {PropTypes} from 'react';
-import {connect} from 'react-redux';
+import React, { Component, PropTypes } from 'react';
+import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { push } from 'react-router-redux';
 
@@ -18,9 +18,23 @@ import { push } from 'react-router-redux';
 	stateless component
 */
 
-const Component = (props) => (
-	##COMPONENT_HTML##
-);
+##COMPONENT_HELPERFUNCTIONS##
+
+class MyComponent extends Component {
+	constructor(props) {
+		super(props);
+	}
+	
+	##COMPONENT_WILL_MOUNT##
+	
+	##COMPONENT_WILL_RECEIVE_PROPS##
+	
+	render() {
+		return (
+			##COMPONENT_HTML##
+		);
+	}
+}
 
 /*
 	PropTypes
@@ -33,7 +47,7 @@ const Component = (props) => (
 	...
 */
 
-Component.propTypes = {
+MyComponent.propTypes = {
 	##PROPTYPES##
 }
 
@@ -60,4 +74,4 @@ const mapStateToProps = (state) => ({
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(Component);
+)(MyComponent);

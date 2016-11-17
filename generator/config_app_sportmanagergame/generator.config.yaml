@@ -123,6 +123,7 @@ forms: []
 #   use {props.children} to render children.
 # redux_actions: a list of redux modules from which import actions.
 #   IMPORTANT: if not set, turn the component into STATELESS.
+#   if no action is needed, just define it as an empty array []
 # helper_components: a list of other components used by this component.
 # props: a list of properties used by this component.
 #   name: the prop name.
@@ -188,10 +189,10 @@ components:
           </div>
           <div>
             <b>Public</b> -
+            <Link to="/current-season">SeasonPage</Link> |
             <Link to="/teams">PublicTeamsPage</Link> |
             <Link to="/team/0">PublicTeamPage</Link> |
             <Link to="/player/0">PublicPlayerPage</Link> |
-            <Link to="/current-season">SeasonPage</Link>
           </div>
           <div>
             <b>Management</b> -
@@ -284,12 +285,20 @@ components:
   props: []
   
 - name: SeasonPage
+  redux_actions: []
   helper_components: []
   html: |
     <div>
       <h1>SeasonPage</h1>
+      <div>
+        <p>Display infos about the current season.</p>
+        <div>Current season: {this.props.currentSeason}</div>
+      </div>
     </div>
-  props: []
+  props:
+  - name: currentSeason
+    subreducer: season
+    type: number
   
 - name: TeamPage
   helper_components: []
@@ -377,9 +386,12 @@ components:
 # define actions and reducers.
 # 
 # name: the name of the module.
-# initialState: a list of elements defining the initial shape of the state.
-#   name: the name of the property.
-#   jsvalue: the value of the property.
+# initialState: a block of text defining a javascript plain object 
+#   (without curly braces). 
+#   ex: 
+#     initialState: |
+#       currentSeason: 0,
+#       isFetching: false
 # actions: a list of sync actions used by the module.
 #   name: the name of the sync action (uppercase).
 #   inputs: a list of properties to pass as inputs to the action creator.
@@ -393,6 +405,17 @@ components:
 #   name: the name of the async action (lowercase).
 #   inputs: a list of properties to pass as inputs to the action creator.
 #         the same variables will be passed to the server.
-#   request_action: the name of the action to dispatch when requesting.
+#   request_action_name: the name of the action to dispatch when requesting.
+#   failure_action_name: the name of the action to dispatch when failure.
+#   success_action_name: the name of the action to dispatch when success.
+#   onSuccess: additional code to be triggered on success.
+#     example:
+#     onSuccess: |
+#       dispatch(push('/dashboard'));
 #
-redux_modules: []
+redux_modules:
+- name: season
+  initialState: |
+    currentSeason: 0
+  actions: []
+  async_actions: []

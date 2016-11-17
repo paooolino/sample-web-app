@@ -190,7 +190,10 @@
 					array_filter($c["props"], function($p){
 						if($p["type"] != "func") return true;
 					}))
-				), 1)
+				), 1),
+				"COMPONENT_HELPERFUNCTIONS" => "",
+				"COMPONENT_WILL_MOUNT" => "",
+				"COMPONENT_WILL_RECEIVE_PROPS" => ""
 			));
 	}
 	
@@ -204,12 +207,7 @@
 				},
 				$redux["actions"])
 			),
-			"INITIAL_STATE" => implode(",\r\n", array_map(
-				function($s){
-					return "\t" . $s["name"] . ": ". $s["jsvalue"];
-				},
-				$redux["initialState"])
-			),
+			"INITIAL_STATE" => rtrim($redux["initialState"]),
 			"REDUCER_ACTIONS" => implode("\r\n", array_map(
 				function($a){
 					$html = '';
