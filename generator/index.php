@@ -7,7 +7,7 @@
 	*/
 	
 	$OUTPUT_ROOT = "../src/";
-	$CONFIG_ROOT = "config_app_cms/";
+	$CONFIG_ROOT = "config_app_sportmanagergame/";
 	
 	/*
 		configuration end

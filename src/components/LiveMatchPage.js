@@ -10,7 +10,7 @@ import {VelocityComponent} from 'velocity-react';
 	internal imports
 */
 
-import TreeItem from './TreeItem';
+
 
 /*
 	stateless component
@@ -18,10 +18,7 @@ import TreeItem from './TreeItem';
 
 const Component = (props) => (
 <div>
-  <div className={"treeitem level_" + props.level}>
-    {props.data.title}
-    {props.data.children && props.data.children.map((d) => <TreeItem level={parseInt(props.level) + 1} key={d.id} data={d} />)}
-  </div>
+  <h1>LiveMatchPage</h1>
 </div>
 
 );

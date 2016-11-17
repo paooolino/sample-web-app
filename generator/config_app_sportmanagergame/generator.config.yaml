@@ -37,6 +37,8 @@ routes:
     onEnter: checkLogin
     
   ## public pages ##
+  - component_name: PublicTeamsPage
+    path: /teams
   - component_name: PublicTeamPage
     path: /team/:id
   - component_name: PublicPlayerPage
@@ -88,9 +90,7 @@ routes_helperfunctions:
 - name: checkLogin
   inputs: [nextState, replace]
   body: |
-    if(!store.getState().login.isLoggedIn) {
-      replace('/login');
-    }
+    // do nothing
     
 #
 # Forms section
@@ -111,15 +111,7 @@ routes_helperfunctions:
 #     required
 #     ...
 #
-forms:
-- name: LoginForm
-  html: |
-    <div>
-      <form onSubmit={props.handleSubmit}>
-        <button>Login</button>
-      </form>
-    </div>
-  validators: []
+forms: []
     
 # 
 # Components section
@@ -147,6 +139,7 @@ forms:
 #         }
 #     NOT NEEDED FOR STATELESS.
 #
+# You may use <Link to="/">Home</Link> as Link is available by default.
 #
 # Stateless component
 #
@@ -184,7 +177,36 @@ components:
   html: |
     <div>
       <header>
-        CMS App.
+        <div>
+          <div>
+            <b>Login/Register</b> -
+            <Link to="/">HomePage</Link> |
+            <Link to="/login">LoginPage</Link> |
+            <Link to="/register">RegisterPage</Link> |
+            <Link to="/lost-password">LostPasswordPage</Link> |
+            <Link to="/dashboard">DashboardPage</Link>
+          </div>
+          <div>
+            <b>Public</b> -
+            <Link to="/teams">PublicTeamsPage</Link> |
+            <Link to="/team/0">PublicTeamPage</Link> |
+            <Link to="/player/0">PublicPlayerPage</Link> |
+            <Link to="/current-season">SeasonPage</Link>
+          </div>
+          <div>
+            <b>Management</b> -
+            <Link to="/dashboard/team">TeamPage</Link> |
+            <Link to="/dashboard/player/0">PlayerPage</Link> |
+            <Link to="/dashboard/training">TrainingPage</Link> |
+            <Link to="/dashboard/lineup">LineupPage</Link> |
+            <Link to="/dashboard/livematch">LiveMatchPage</Link> |
+            <Link to="/dashboard/stadium">StadiumPage</Link> |
+            <Link to="/dashboard/finance">FinancePage</Link> |
+            <Link to="/dashboard/events">EventsPage</Link> |
+            <Link to="/dashboard/fixtures">FixturesPage</Link> |
+            <Link to="/dashboard/standings">StandingsPage</Link>
+          </div>
+        </div>
       </header>
       <div className="content">
         {props.children}
@@ -201,57 +223,151 @@ components:
   helper_components: []
   html: |
     <div>
-      <h1>Home</h1>
+      <h1>HomePage</h1>
     </div>
   props: []
     
 - name: LoginPage
-  helper_components: [LoginForm]
+  helper_components: []
   html: |
     <div>
-      <h1>Login</h1>
-      <LoginForm onSubmit={props.handleSubmit} />
+      <h1>LoginPage</h1>
     </div>
-  redux_actions: [login]
-  props:
-  - name: handleSubmit
-    type: func
-    def: |
-      (evt) => {
-        dispatch(actions_login.login());
-        dispatch(push('/dashboard'));
-      }
+  props: []
     
-- name: DashboardPage
-  helper_components: [Tree]
-  redux_actions: [tree]
+- name: RegisterPage
+  helper_components: []
   html: |
     <div>
-      <h1>Dashboard</h1>
-      <Tree data={props.urlTreeData} />
-    </div>
-  props:
-  - name: urlTreeData
-    type: array
-    subreducer: tree
-  
-- name: Tree
-  helper_components: [TreeItem]
-  html: |
-    <div>
-      <div>Tree</div>
-      <TreeItem level="1" data={props.data[0]} />
+      <h1>RegisterPage</h1>
     </div>
   props: []
   
-- name: TreeItem
-  helper_components: [TreeItem]
+- name: LostPasswordPage
+  helper_components: []
   html: |
     <div>
-      <div className={"treeitem level_" + props.level}>
-        {props.data.title}
-        {props.data.children && props.data.children.map((d) => <TreeItem level={parseInt(props.level) + 1} key={d.id} data={d} />)}
-      </div>
+      <h1>LostPasswordPage</h1>
+    </div>
+  props: []
+  
+- name: DashboardPage
+  helper_components: []
+  html: |
+    <div>
+      <h1>DashboardPage</h1>
+    </div>
+  props: []
+  
+- name: PublicTeamsPage
+  helper_components: []
+  html: |
+    <div>
+      <h1>PublicTeamsPage</h1>
+    </div>
+  props: []
+  
+- name: PublicTeamPage
+  helper_components: []
+  html: |
+    <div>
+      <h1>PublicTeamPage</h1>
+    </div>
+  props: []
+  
+- name: PublicPlayerPage
+  helper_components: []
+  html: |
+    <div>
+      <h1>PublicPlayerPage</h1>
+    </div>
+  props: []
+  
+- name: SeasonPage
+  helper_components: []
+  html: |
+    <div>
+      <h1>SeasonPage</h1>
+    </div>
+  props: []
+  
+- name: TeamPage
+  helper_components: []
+  html: |
+    <div>
+      <h1>TeamPage</h1>
+    </div>
+  props: []
+  
+- name: PlayerPage
+  helper_components: []
+  html: |
+    <div>
+      <h1>PlayerPage</h1>
+    </div>
+  props: []
+  
+- name: TrainingPage
+  helper_components: []
+  html: |
+    <div>
+      <h1>TrainingPage</h1>
+    </div>
+  props: []
+  
+- name: LineupPage
+  helper_components: []
+  html: |
+    <div>
+      <h1>LineupPage</h1>
+    </div>
+  props: []
+  
+- name: LiveMatchPage
+  helper_components: []
+  html: |
+    <div>
+      <h1>LiveMatchPage</h1>
+    </div>
+  props: []
+  
+- name: StadiumPage
+  helper_components: []
+  html: |
+    <div>
+      <h1>StadiumPage</h1>
+    </div>
+  props: []
+  
+- name: FinancePage
+  helper_components: []
+  html: |
+    <div>
+      <h1>FinancePage</h1>
+    </div>
+  props: []
+  
+- name: EventsPage
+  helper_components: []
+  html: |
+    <div>
+      <h1>EventsPage</h1>
+    </div>
+  props: []
+  
+- name: FixturesPage
+  helper_components: []
+  html: |
+    <div>
+      <h1>FixturesPage</h1>
+    </div>
+  props: []
+  
+- name: StandingsPage
+  helper_components: []
+  html: |
+    <div>
+      <h1>StandingsPage</h1>
     </div>
   props: []
   
@@ -279,45 +395,4 @@ components:
 #         the same variables will be passed to the server.
 #   request_action: the name of the action to dispatch when requesting.
 #
-redux_modules: 
-- name: login
-  initialState:
-  - name: isLoggedIn
-    jsvalue: "false"
-  actions:
-  - name: LOGIN
-    inputs: []
-    effects:
-    - key: isLoggedIn
-      newValue: "true"
-  async_actions: []
-    
-- name: tree
-  initialState:
-  - name: urlTreeData
-    jsvalue: "[
-      {
-        id: 1,
-        title: 'Home',
-        slug: '',
-        children: [{
-          id: 2,
-          title: 'Info',
-          slug: 'info'
-        }, {
-          id: 3,
-          title: 'Products',
-          slug: 'products'
-        }, {
-          id: 4,
-          title: 'News',
-          slug: 'news'
-        }, {
-          id: 5,
-          title: 'Contacts',
-          slug: 'contacts'
-        }]
-      }
-    ]"
-  actions: []
-  async_actions: []
+redux_modules: []

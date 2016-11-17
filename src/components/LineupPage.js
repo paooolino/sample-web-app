@@ -10,7 +10,7 @@ import {VelocityComponent} from 'velocity-react';
 	internal imports
 */
 
-import TreeItem from './TreeItem';
+
 
 /*
 	stateless component
@@ -18,8 +18,7 @@ import TreeItem from './TreeItem';
 
 const Component = (props) => (
 <div>
-  <div>Tree</div>
-  <TreeItem level="1" data={props.data[0]} />
+  <h1>LineupPage</h1>
 </div>
 
 );

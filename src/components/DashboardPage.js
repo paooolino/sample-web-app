@@ -3,26 +3,24 @@
 */
 
 import React, {PropTypes} from 'react';
-import {connect} from 'react-redux';
 import { Link } from 'react-router';
-import { push } from 'react-router-redux';
+import {VelocityComponent} from 'velocity-react';
 
 /*
 	internal imports
 */
 
-import * as actions_tree from '../redux/tree';
-import Tree from './Tree';
+
 
 /*
 	stateless component
 */
 
 const Component = (props) => (
-	<div>
-		<h1>Dashboard</h1>
-		<Tree data={props.urlTreeData} />
-	</div>
+<div>
+  <h1>DashboardPage</h1>
+</div>
+
 );
 
 /*
@@ -37,30 +35,7 @@ const Component = (props) => (
 */
 
 Component.propTypes = {
-	urlTreeData: PropTypes.array.isRequired
+
 }
 
-/*
-	dispatches
-*/
-
-const mapDispatchToProps = (dispatch) => ({
-		
-});
-
-/*
-	state
-*/
-
-const mapStateToProps = (state) => ({
-	urlTreeData: state.tree.urlTreeData	
-});
-
-/*
-	connect & export
-*/
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(Component);
+export default Component;

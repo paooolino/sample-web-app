@@ -3,26 +3,24 @@
 */
 
 import React, {PropTypes} from 'react';
-import {connect} from 'react-redux';
 import { Link } from 'react-router';
-import { push } from 'react-router-redux';
+import {VelocityComponent} from 'velocity-react';
 
 /*
 	internal imports
 */
 
-import * as actions_login from '../redux/login';
-import LoginForm from './LoginForm';
+
 
 /*
 	stateless component
 */
 
 const Component = (props) => (
-	<div>
-		<h1>Login</h1>
-		<LoginForm onSubmit={props.handleSubmit} />
-	</div>
+<div>
+  <h1>LoginPage</h1>
+</div>
+
 );
 
 /*
@@ -37,33 +35,7 @@ const Component = (props) => (
 */
 
 Component.propTypes = {
-	handleSubmit: PropTypes.func.isRequired
+
 }
 
-/*
-	dispatches
-*/
-
-const mapDispatchToProps = (dispatch) => ({
-	handleSubmit: (evt) => {
-		dispatch(actions_login.login());
-		dispatch(push('/dashboard'));
-	}	
-});
-
-/*
-	state
-*/
-
-const mapStateToProps = (state) => ({
-		
-});
-
-/*
-	connect & export
-*/
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(Component);
+export default Component;
