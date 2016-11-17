@@ -21,7 +21,11 @@
 	$CONFIG = yaml_parse_file($CONFIG_ROOT . "/generator.config.yaml");
 		
 	// empty folder
-	emptyDir($OUTPUT_ROOT);
+	if(!file_exists($OUTPUT_ROOT)) {
+		mkdir($OUTPUT_ROOT);
+	} else {
+		emptyDir($OUTPUT_ROOT);
+	}
 	
 	// utils
 	createFile("utils/", "renderField.js", file_get_contents("templates/utils.renderFields.js"), array());
