@@ -45,6 +45,8 @@ routes:
     path: /player/:id
   - component_name: SeasonPage
     path: /current-season
+  - component_name: LeaguePage
+    path: /league/:id
     
   ## management pages ##
   - component_name: TeamPage
@@ -192,9 +194,10 @@ components:
           <div>
             <b>Public</b> -
             <Link to="/current-season">SeasonPage</Link> |
+            <Link to="/league/1">LeaguePage</Link> |
             <Link to="/teams">PublicTeamsPage</Link> |
-            <Link to="/team/0">PublicTeamPage</Link> |
-            <Link to="/player/0">PublicPlayerPage</Link> |
+            <Link to="/team/1">PublicTeamPage</Link> |
+            <Link to="/player/1">PublicPlayerPage</Link> |
           </div>
           <div>
             <b>Management</b> -
@@ -294,7 +297,14 @@ components:
       <h1>SeasonPage</h1>
       <div>
         <p>Display infos about the current season.</p>
-        <div>Current season: {this.props.currentSeason}</div>
+        <div><b>Current season:</b> {this.props.currentSeason}</div>
+        <div><b>Leagues:</b>
+          <ul>
+            {this.props.leagues.map(league => 
+              <li key={league.id}><Link to={"/league/" + league.id}>{league.name}</Link></li>
+            )}
+          </ul>
+        </div>
       </div>
     </div>
   willmount: |
@@ -303,12 +313,23 @@ components:
   - name: currentSeason
     subreducer: season
     type: number
+  - name: leagues
+    subreducer: season
+    type: array
   - name: fetch_season
     type: func
     def: |
       () => {
         dispatch(actions_season.fetch_season());
       }
+  
+- name: LeaguePage
+  helper_components: []
+  html: |
+    <div>
+      <h1>LeaguePage</h1>
+    </div>
+  props: []
   
 - name: TeamPage
   helper_components: []
@@ -435,7 +456,8 @@ components:
 redux_modules:
 - name: season
   initialState: |
-    currentSeason: 0
+    currentSeason: 0,
+    leagues: []
   actions: []
   async_actions:
   - name: fetch_season
@@ -454,4 +476,6 @@ redux_modules:
       effects:
       - key: currentSeason
         newValue: action.json.currentSeason
+      - key: leagues
+        newValue: action.json.leagues
     onSuccess:

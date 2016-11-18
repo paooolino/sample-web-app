@@ -43,7 +43,23 @@ class App {
 		
 		switch($data->action) {
 			case "season/FETCH_REQUEST":
-				$result = array("currentSeason" => 1);
+				$result = array(
+					"currentSeason" => 1,
+					"leagues" => array(
+						array(
+							"id" => 1,
+							"name" => "Serie A"
+						),
+						array(
+							"id" => 2,
+							"name" => "Serie B"
+						),
+						array(
+							"id" => 3,
+							"name" => "Lega Pro"
+						)
+					)
+				);
 			break;
 			
 			default:
