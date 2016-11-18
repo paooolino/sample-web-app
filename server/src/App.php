@@ -40,6 +40,18 @@ class App {
 	
 	public function route(Request $request, Response $response) {
 		$data = json_decode($request->getBody());
+		
+		switch($data->action) {
+			case "season/FETCH_REQUEST":
+				$result = array("currentSeason" => 1);
+			break;
+			
+			default:
+				$result = "Unauthorized";
+		}
+		
+		return $response->withJson($result);
+		/*
 		$item = R::findOne('users', 'user = ? AND pass = ?', array($data->usr, $data->pwd));
 		if($item) {
 			return $response->withJson(R::exportAll($item));
@@ -49,6 +61,7 @@ class App {
 				->withHeader('Content-Type', 'text/html')
 				->write('Unauthorized');
 		}
+		*/
 	}
 	
 	public function run() {

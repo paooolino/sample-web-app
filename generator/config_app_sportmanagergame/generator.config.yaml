@@ -157,10 +157,10 @@ forms: []
 # Connected component
 #
 # - name: <component name>
-#   redux_actions: ['<redux module 1>', '<redux module 2>']
+#   redux_actions: ['<redux module 1>', '<redux module 2>'] or just an empty array []
 #   helper_components: ['<helper component1>', '<helper component2>']
 #   html: |
-#     <div>{props.children}</div>
+#     <div>{this.props.children}</div>
 #   props:
 #   - name: <prop name (not function)>
 #     type: <prop type>
@@ -435,10 +435,10 @@ redux_modules:
     inputs: []
     effects: []
   - name: FETCH_SUCCESS
-    inputs: []
+    inputs: [json]
     effects:
     - key: currentSeason
-      newValue: 1
+      newValue: action.json.currentSeason
   
   async_actions:
   - name: fetch_season

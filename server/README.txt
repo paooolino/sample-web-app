@@ -1,3 +1,7 @@
+composer install
+
+
+
 # slim-rest-api
 
 ## php built-in web server

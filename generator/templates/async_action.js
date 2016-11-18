@@ -18,6 +18,22 @@ export const ##ACTION_NAME## = (##ASYNC_INPUTS##) => {
 		const body_request = {##ASYNC_INPUTS##};
 		body_request.action = ##REQUEST_ACTION_NAME_UPPERCASE##;
     return fetch(ENDPOINT_HOST + ENDPOINT_PATH, {
+				method: 'post',
+				body: JSON.stringify(body_request)
+			})
+			.then(response => response.json())
+			.then(json => {
+				dispatch(##SUCCESS_ACTION_NAME##(json));
+				##ON_SUCCESS##
+			})
+			.catch(err => {
+				// Error: handle it the way you like, undoing the optimistic update,
+				//  showing a "out of sync" message, etc.
+				dispatch(##FAILURE_ACTION_NAME##(err.message));
+			});
+			
+		/*	
+    return fetch(ENDPOINT_HOST + ENDPOINT_PATH, {
       method: 'post',
       body: JSON.stringify(body_request)
     }).then(response => {
@@ -34,5 +50,6 @@ export const ##ACTION_NAME## = (##ASYNC_INPUTS##) => {
 			//  showing a "out of sync" message, etc.
 			dispatch(##FAILURE_ACTION_NAME##(err.message));
     });
+		*/
   }
 }
