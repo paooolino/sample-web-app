@@ -209,8 +209,19 @@
 					GLOBAL $redux;
 					return "const ". $a["name"] ." = '". $redux["name"] ."/". $a["name"] ."';";
 				},
-				$redux["actions"])
-			),
+				array_merge(
+					$redux["actions"],
+					array_map(function($aa){
+						return $aa["request_action"];
+					}, $redux["async_actions"]),
+					array_map(function($aa){
+						return $aa["failure_action"];
+					}, $redux["async_actions"]),
+					array_map(function($aa){
+						return $aa["success_action"];
+					}, $redux["async_actions"])
+				)
+			)),
 			"INITIAL_STATE" => rtrim($redux["initialState"]),
 			"REDUCER_ACTIONS" => implode("\r\n", array_map(
 				function($a){
@@ -226,17 +237,28 @@
 					$html .= "\r\n\t\t\t" . "})\r\n";
 					return $html;
 				},
-				$redux["actions"])
-			),
+				array_merge(
+					$redux["actions"],
+					array_map(function($aa){
+						return $aa["request_action"];
+					}, $redux["async_actions"]),
+					array_map(function($aa){
+						return $aa["failure_action"];
+					}, $redux["async_actions"]),
+					array_map(function($aa){
+						return $aa["success_action"];
+					}, $redux["async_actions"])
+				)
+			)),
 			"ASYNC_ACTIONS" => implode("\r\n\r\n", array_map(
 				function($a){
 					$html = populate_template(file_get_contents("templates/async_action.js"), array(
 						"ACTION_NAME" => $a["name"],
 						"ASYNC_INPUTS" => implode(", ", $a["inputs"]),
-						"REQUEST_ACTION_NAME_UPPERCASE" => $a["request_action_name"],
-						"REQUEST_ACTION_NAME" => strtolower($a["request_action_name"]),
-						"FAILURE_ACTION_NAME" => strtolower($a["failure_action_name"]),
-						"SUCCESS_ACTION_NAME" => strtolower($a["success_action_name"]),
+						"REQUEST_ACTION_NAME_UPPERCASE" => $a["request_action"]["name"],
+						"REQUEST_ACTION_NAME" => strtolower($a["request_action"]["name"]),
+						"FAILURE_ACTION_NAME" => strtolower($a["failure_action"]["name"]),
+						"SUCCESS_ACTION_NAME" => strtolower($a["success_action"]["name"]),
 						"ON_SUCCESS" => $a["onSuccess"]
 					));
 					return $html;
@@ -256,7 +278,18 @@
 					
 					return $html;
 				},
-				$redux["actions"]
+				array_merge(
+					$redux["actions"],
+					array_map(function($aa){
+						return $aa["request_action"];
+					}, $redux["async_actions"]),
+					array_map(function($aa){
+						return $aa["failure_action"];
+					}, $redux["async_actions"]),
+					array_map(function($aa){
+						return $aa["success_action"];
+					}, $redux["async_actions"])
+				)
 			))
 		));
 	}

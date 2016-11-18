@@ -415,9 +415,18 @@ components:
 #   name: the name of the async action (lowercase).
 #   inputs: a list of properties to pass as inputs to the action creator.
 #         the same variables will be passed to the server.
-#   request_action_name: the name of the action to dispatch when requesting.
-#   failure_action_name: the name of the action to dispatch when failure.
-#   success_action_name: the name of the action to dispatch when success.
+#   request_action: a sync action (name, inputs, effects) to dispatch when requesting.
+#   failure_action: a sync action (name, inputs, effects) to dispatch when failure.
+#   success_action: a sync action (name, inputs, effects) to dispatch when success.
+#     example:
+#
+#    success_action: 
+#      name: FETCH_SUCCESS
+#      inputs: [json]
+#      effects:
+#      - key: currentSeason
+#        newValue: action.json.currentSeason
+#
 #   onSuccess: additional code to be triggered on success.
 #     example:
 #     onSuccess: |
@@ -427,23 +436,22 @@ redux_modules:
 - name: season
   initialState: |
     currentSeason: 0
-  actions:
-  - name: FETCH_REQUEST
-    inputs: []
-    effects: []
-  - name: FETCH_FAILURE
-    inputs: []
-    effects: []
-  - name: FETCH_SUCCESS
-    inputs: [json]
-    effects:
-    - key: currentSeason
-      newValue: action.json.currentSeason
-  
+  actions: []
   async_actions:
   - name: fetch_season
     inputs: []
-    request_action_name: FETCH_REQUEST
-    failure_action_name: FETCH_FAILURE
-    success_action_name: FETCH_SUCCESS
+    request_action:
+      name: FETCH_REQUEST
+      inputs: []
+      effects: []
+    failure_action:
+      name: FETCH_FAILURE
+      inputs: []
+      effects: []
+    success_action: 
+      name: FETCH_SUCCESS
+      inputs: [json]
+      effects:
+      - key: currentSeason
+        newValue: action.json.currentSeason
     onSuccess:
