@@ -62,8 +62,28 @@ class App {
 				);
 			break;
 			
+			case "league/FETCH_REQUEST":
+				$result = array(
+					"name" => "Serie A",
+					"standings" => array(
+						array(
+							"teamName" => "Juventus"
+						),
+						array(
+							"teamName" => "Milan"
+						),
+						array(
+							"teamName" => "Inter"
+						)
+					)
+				);
+			break;
+			
 			default:
-				$result = "Unauthorized";
+				return $response
+					->withStatus(401)
+					->withHeader('Content-Type', 'text/html')
+					->write('Unauthorized');
 		}
 		
 		return $response->withJson($result);
