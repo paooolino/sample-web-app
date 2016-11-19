@@ -1,0 +1,42 @@
+Juventus,10
+Milan,10
+Inter,10
+Napoli,10
+Roma,10
+Fiorentina,9
+Lazio,9
+Atalanta,7
+Torino,7
+Genoa,6
+Cagliari,6
+Chievo,7
+Udinese,7
+Sampdoria,6
+Bologna,6
+Sassuolo,6
+Empoli,5
+Pescara,5
+Palermo,5
+Crotone,5
+Hellas Verona,6
+Cittadella,5
+Frosinone,5
+Benevento,4
+SPAL,3
+Virtus Entella,4
+Perugia,4
+Carpi,4
+Spezia,4
+Brescia,4
+Novara,3
+Bari,4
+Salernitana,4
+Latina,3
+Pisa,3
+Pro Vercelli,3
+Ascoli,3
+Cesena,3
+Avellino,3
+Vicenza,3
+Ternana,3
+Trapani,2
