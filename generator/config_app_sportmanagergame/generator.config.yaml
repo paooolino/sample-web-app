@@ -331,11 +331,11 @@ components:
       <h1>LeaguePage</h1>
       <div>
         <p>Display infos about the league.</p>
-        <div><b>{this.props.name}</b></div>
+        <div><b>{this.props.league.name}</b></div>
         <div><b>Standings</b>
           <div>
-            {this.props.standings.map(row => 
-              <div key={row.teamName}>{row.teamName}</div>
+            {this.props.teams.map(row => 
+              <div key={row.name}>{row.name}</div>
             )}
           </div>
         </div>
@@ -344,10 +344,10 @@ components:
   willmount: |
     this.props.fetch_league(this.props.params.id);
   props:
-  - name: name
+  - name: league
     subreducer: league
-    type: string
-  - name: standings
+    type: object
+  - name: teams
     subreducer: league
     type: array
   - name: fetch_league
@@ -501,15 +501,15 @@ redux_modules:
       inputs: [json]
       effects:
       - key: currentSeason
-        newValue: action.json.currentSeason
+        newValue: parseInt(action.json.currentSeason, 10)
       - key: leagues
         newValue: action.json.leagues
     onSuccess:
     
 - name: league
   initialState: |
-    name: '',
-    standings: []
+    league: {},
+    teams: []
   actions: []
   async_actions:
   - name: fetch_league
@@ -526,8 +526,8 @@ redux_modules:
       name: FETCH_SUCCESS
       inputs: [json]
       effects:
-      - key: name
-        newValue: action.json.name
-      - key: standings
-        newValue: action.json.standings
+      - key: league
+        newValue: action.json.league
+      - key: teams
+        newValue: action.json.teams
     onSuccess:

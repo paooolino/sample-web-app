@@ -58,19 +58,11 @@ class App {
 			break;
 			
 			case "league/FETCH_REQUEST":
+				$league = R::load('leagues', $data->id);
+				$teams = R::find('teams', ' id_league = ?', array($data->id));
 				$result = array(
-					"name" => "Serie A",
-					"standings" => array(
-						array(
-							"teamName" => "Juventus"
-						),
-						array(
-							"teamName" => "Milan"
-						),
-						array(
-							"teamName" => "Inter"
-						)
-					)
+					"league" => $league->export(),
+					"teams" => R::exportAll($teams)
 				);
 			break;
 			
@@ -157,6 +149,7 @@ class App {
 				$team->name = $t[0];
 				$team->strength = $t[1];
 				$team->id_league = $index + 1;
+				$team->points = 0;
 				R::store($team);
 			});
 		});
