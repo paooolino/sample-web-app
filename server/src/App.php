@@ -49,22 +49,11 @@ class App {
 		
 		switch($data->action) {
 			case "season/FETCH_REQUEST":
+				$option = R::findOne('options', ' option_name = ?', array("current_season"));
+				$leagues = R::findAll('leagues');
 				$result = array(
-					"currentSeason" => 1,
-					"leagues" => array(
-						array(
-							"id" => 1,
-							"name" => "Serie A"
-						),
-						array(
-							"id" => 2,
-							"name" => "Serie B"
-						),
-						array(
-							"id" => 3,
-							"name" => "Lega Pro"
-						)
-					)
+					"currentSeason" => $option->option_value,
+					"leagues" => R::exportAll($leagues)
 				);
 			break;
 			
@@ -174,19 +163,24 @@ class App {
 		
 		// players
 		$teams = R::findAll('teams');
-		array_walk($teams, function($t){
-			for($i = 0; $i < 16; $i++) {
-				$this->create_player($t->id);
+		$roles = "PDDDDCCCCAAPDDCCAAPDCA";
+		array_walk($teams, function($t) use($roles){
+			for($i = 0; $i < 22; $i++) {
+				$this->create_player($t->id, $t->strength, $roles[$i]);
 			}
 		});
 		
 	}
 	
-	public function create_player($id_team) {
+	private function create_player($id_team, $team_strength, $role) {
 		$player = R::dispense('players');
 		$player->name = $this->get_random_player_name();
 		$player->surname = $this->get_random_player_surname();
 		$player->id_team = $id_team;
+		$player->strength = ($team_strength * 10) + mt_rand(0, 20) - 10;
+		$player->form = 50 + mt_rand(0, 20) - 10;
+		$player->age = mt_rand(16, 38);
+		$player->role = $role;
 		R::store($player);
 	}
 	
